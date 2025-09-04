@@ -15,6 +15,15 @@ variableGroups:
       - instance_boot_volume_vpus
       - instance_flex_shape_memory
       - instance_flex_shape_ocpus
+      - db_system_credentials_password_details_password_type
+      - db_system_db_version
+      - db_system_instance_count
+      - db_system_instance_memory_size_in_gbs
+      - db_system_instance_ocpu_count
+      - db_system_shape
+      - db_system_storage_details_is_regionally_durable
+      - db_system_storage_details_system_type
+      - instance_image_source_id
 
   - title: Required Configuration
     visible: true
@@ -23,12 +32,14 @@ variableGroups:
       - compartment_ocid
       - availability_domain
       - adb_name
-      - adb_password
+      - db_password
       - license_model
+      - mysql_display_name
+      - db_system_display_name
       - instance_display_name
       - vcn_ai_vcn_id
-      - subnet_public_id
       - subnet_private_id
+      - subnet_public_id
       - ssh_authorized_keys
       - bucket_region
       - bucket_name
@@ -62,27 +73,43 @@ variables:
     type: string
     required: true
     visible: true
-    title: "Database name"
-
-  adb_password:
-    type: password
-    required: true
-    visible: true
-    title: "Database password"
-    description: "Set the password for your Autonomous Database ADMIN user here."
-    # renders a second field to re-enter the password for confirmation
-    confirmation: true
-    pattern: "^(?!.*admin)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?!.*[\"]).{12,30}$"
+    title: "ADB Name"
 
   license_model:
     type: enum
     required: true
     visible: true
-    title: "Choose license"
+    title: "Choose ADB license"
     enum:
       - "BRING_YOUR_OWN_LICENSE"
       - "LICENSE_INCLUDED"
     default: "LICENSE_INCLUDED"
+
+  mysql_display_name:
+    type: string
+    required: true
+    visible: true
+    title: "MySQL Database Display Name"
+    description: "Display name for MySQL database system (also used as hostname label)"
+    default: "mysql4adbaisidecar"
+
+  db_system_display_name:
+    type: string
+    required: true
+    visible: true
+    title: "PostgreSQL Database Display Name"
+    description: "Display name for PostgreSQL database system"
+    default: "postgresql4adbaisidecar"
+
+  db_password:
+    type: password
+    required: true
+    visible: true
+    title: "Database password"
+    description: "Set the password for your Database ADMIN user here."
+    # renders a second field to re-enter the password for confirmation
+    confirmation: true
+    pattern: "^(?!.*admin)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?!.*[\"]).{12,30}$"
 
   instance_display_name:
     type: string
@@ -99,22 +126,22 @@ variables:
     dependsOn:
       compartmentId: ${compartment_ocid}
 
-  subnet_public_id:
-    type: oci:core:subnet:id
-    required: true
-    visible: true
-    title: "Public Subnet"
-    description: "Select existing public subnet for compute instances"
-    dependsOn:
-      compartmentId: ${compartment_ocid}
-      vcnId: ${vcn_ai_vcn_id}
-
   subnet_private_id:
     type: oci:core:subnet:id
     required: true
     visible: true
     title: "Private Subnet"
     description: "Select existing private subnet for database"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+      vcnId: ${vcn_ai_vcn_id}
+
+  subnet_public_id:
+    type: oci:core:subnet:id
+    required: true
+    visible: true
+    title: "Public Subnet"
+    description: "Select existing public subnet for compute instances"
     dependsOn:
       compartmentId: ${compartment_ocid}
       vcnId: ${vcn_ai_vcn_id}
@@ -181,7 +208,7 @@ variables:
     type: enum
     required: true
     visible: true
-    title: "Choose the shape."
+    title: "Choose the shape for compute instance."
     enum:
       - "VM.Standard.E4.Flex"
       - "VM.Standard.E5.Flex"
@@ -195,6 +222,7 @@ variables:
     visible: false
   instance_flex_shape_ocpus:
     visible: false
+
   dify_branch:
     type: string
     required: false
@@ -202,6 +230,70 @@ variables:
     title: "Dify Branch/Tag"
     description: "Branch or tag name to use when cloning the Dify repository"
     default: "1.8.0"
+
+  db_system_credentials_password_details_password_type:
+    type: string
+    required: true
+    visible: false
+    title: "PostgreSQL Password Type"
+    description: "Password type for PostgreSQL database"
+    default: "PLAIN_TEXT"
+
+  db_system_db_version:
+    type: number
+    required: true
+    visible: false
+    title: "PostgreSQL Database Version"
+    description: "Version of PostgreSQL database"
+    default: 16
+
+  db_system_instance_count:
+    type: number
+    required: true
+    visible: false
+    title: "PostgreSQL Instance Count"
+    description: "Number of PostgreSQL instances"
+    default: 1
+
+  db_system_instance_memory_size_in_gbs:
+    type: number
+    required: true
+    visible: false
+    title: "PostgreSQL Instance Memory Size (GB)"
+    description: "Memory size in GB for PostgreSQL instances"
+    default: 16
+
+  db_system_instance_ocpu_count:
+    type: number
+    required: true
+    visible: false
+    title: "PostgreSQL Instance OCPU Count"
+    description: "OCPU count for PostgreSQL instances"
+    default: 2
+
+  db_system_shape:
+    type: string
+    required: true
+    visible: false
+    title: "PostgreSQL Database Shape"
+    description: "Shape for PostgreSQL database system"
+    default: "PostgreSQL.VM.Standard.E5.Flex"
+
+  db_system_storage_details_is_regionally_durable:
+    type: boolean
+    required: true
+    visible: false
+    title: "PostgreSQL Regional Durability"
+    description: "Whether PostgreSQL storage is regionally durable"
+    default: true
+
+  db_system_storage_details_system_type:
+    type: string
+    required: true
+    visible: false
+    title: "PostgreSQL Storage System Type"
+    description: "Storage system type for PostgreSQL"
+    default: "OCI_OPTIMIZED_STORAGE"
 
 outputs:
   bucket_region:
@@ -223,6 +315,11 @@ outputs:
   adb_connection_string:
     title: "Autonomous Data Warehouse High Connection String"
     displayText: "Autonomous Data Warehouse High Connection String"
+    type: copyableString
+    visible: true
+  adb_connection_string_full:
+    title: "Full Oracle Connection Descriptor (HIGH with MUTUAL TLS)"
+    displayText: "Full Oracle Connection Descriptor (HIGH with MUTUAL TLS)"
     type: copyableString
     visible: true
   ssh_to_instance:

@@ -1,5 +1,5 @@
 resource "oci_database_autonomous_database" "generated_database_autonomous_database" {
-  admin_password                       = var.adb_password
+  admin_password                       = var.db_password
   autonomous_maintenance_schedule_type = "REGULAR"
   backup_retention_period_in_days      = "1"
   character_set                        = "AL32UTF8"
@@ -23,7 +23,7 @@ resource "oci_database_autonomous_database" "generated_database_autonomous_datab
 
 resource "oci_database_autonomous_database_wallet" "generated_autonomous_data_warehouse_wallet" {
   autonomous_database_id = oci_database_autonomous_database.generated_database_autonomous_database.id
-  password               = var.adb_password
+  password               = var.db_password
   base64_encode_content  = "true"
 }
 

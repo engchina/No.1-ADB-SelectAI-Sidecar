@@ -126,7 +126,7 @@ cd /u01/aidify/props
 
 # Verify required files exist
 verify_file "wallet.zip"
-verify_file "adb_password.txt"
+verify_file "db_password.txt"
 verify_file "adb_dsn.txt"
 
 log "Extracting ADB wallet..."
@@ -149,7 +149,7 @@ cat $TNS_ADMIN/tnsnames.ora
 
 # Execute SQL initialization
 log "Executing ADB initialization SQL..."
-ADB_PASSWORD=$(cat adb_password.txt)
+ADB_PASSWORD=$(cat db_password.txt)
 ADB_DSN=$(cat adb_dsn.txt)
 
 if echo -e "BEGIN\nCTX_DDL.CREATE_PREFERENCE('world_lexer','WORLD_LEXER');\nEND;\n/\nexit;" | sqlplus -S ADMIN/${ADB_PASSWORD}@${ADB_DSN}; then
@@ -197,7 +197,7 @@ log "Cloning and installing Dify..."
 
 # Verify required configuration files
 verify_file "/u01/aidify/props/dify_branch.txt"
-verify_file "/u01/aidify/props/adb_password.txt"
+verify_file "/u01/aidify/props/db_password.txt"
 verify_file "/u01/aidify/props/adb_dsn.txt"
 verify_file "/u01/aidify/props/wallet_password.txt"
 verify_file "/u01/aidify/props/bucket_namespace.txt"
@@ -223,7 +223,7 @@ cd dify/docker
 
 # Get OCI configuration
 log "Reading OCI configuration..."
-ORACLE_PASSWORD=$(cat /u01/aidify/props/adb_password.txt)
+ORACLE_PASSWORD=$(cat /u01/aidify/props/db_password.txt)
 ORACLE_DSN=$(cat /u01/aidify/props/adb_dsn.txt)
 ORACLE_WALLET_PASSWORD=$(cat /u01/aidify/props/wallet_password.txt)
 BUCKET_NAMESPACE=$(cat /u01/aidify/props/bucket_namespace.txt)
@@ -426,7 +426,14 @@ for attempt in $(seq 1 $max_service_attempts); do
     fi
 done
 
+# Application setup
+cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+sed -i "s|localhost:3100|$EXTERNAL_IP:3100|g" ./langfuse/docker-compose.yml
+chmod +x ./langfuse/main.sh
+nohup ./langfuse/main.sh &
+
 # Initialization completed
 log "=== Initialization completed ==="
 log "Dify is ready, access URL: http://${EXTERNAL_IP}:8080"
+log "Langfuse is ready, access URL: http://${EXTERNAL_IP}:3100"
 log "If the service is not immediately available, please wait a few more minutes for all services to fully start"

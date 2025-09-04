@@ -13,8 +13,8 @@ output "bucket_namespace" {
   value       = data.oci_objectstorage_namespace.tenant_namespace.namespace
 }
 
-output "adb_password" {
-    value = var.adb_password
+output "db_password" {
+    value = var.db_password
 }
 
 output "adb_connection_string" {
@@ -22,6 +22,16 @@ output "adb_connection_string" {
     oci_database_autonomous_database.generated_database_autonomous_database.connection_strings[0].all_connection_strings,
     "HIGH",
     "unavailable",
+  )
+}
+
+output "adb_connection_string_full" {
+  description = "Full Oracle connection descriptor for ADB HIGH service"
+  value = try(
+    [for profile in oci_database_autonomous_database.generated_database_autonomous_database.connection_strings[0].profiles :
+      profile.value if profile.consumer_group == "HIGH" && profile.tls_authentication == "MUTUAL"
+    ][0],
+    "unavailable"
   )
 }
 

@@ -34,7 +34,7 @@ write_files:
     encoding: base64
     content: |
       ${oci_database_autonomous_database_wallet_content}
-  - path: "/u01/aidify/props/adb_password.txt"
+  - path: "/u01/aidify/props/db_password.txt"
     permissions: "0644"
     content: ${oci_database_autonomous_database_password}
   - path: "/u01/aidify/props/adb_dsn.txt"
@@ -51,6 +51,7 @@ runcmd:
   - echo "Running aidify init..."
   - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
   - iptables -I INPUT 7 -m state --state NEW -p tcp --dport 5001 -j ACCEPT
+  - iptables -I INPUT 8 -m state --state NEW -p tcp --dport 3100 -j ACCEPT
   - netfilter-persistent save
   - echo "Downloading and running init script..."
   - cd /u01/aidify

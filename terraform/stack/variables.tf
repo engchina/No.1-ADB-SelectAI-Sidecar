@@ -10,7 +10,7 @@ variable "adb_name" {
   default = "AISIDECAR"
 }
 
-variable "adb_password" {
+variable "db_password" {
   default = ""
 }
 
@@ -80,4 +80,62 @@ variable "oci_secret_key" {
 
 variable "dify_branch" {
   default = "1.8.0"
+}
+
+variable "mysql_display_name" {
+  description = "Display name for MySQL database system"
+  default = "mysql4adbaisidecar"
+}
+
+variable "db_system_display_name" {
+  description = "Display name for PostgreSQL database system"
+  default = "postgresql4adbaisidecar"
+}
+
+variable "db_system_db_version" {
+  description = "Version"
+  type = number
+  default = 16
+}
+
+variable "db_system_shape" {
+    description = "shape"
+    type = string
+    default = "PostgreSQL.VM.Standard.E5.Flex"
+}
+
+variable "db_system_storage_details_is_regionally_durable" {
+  description = "regional"
+  type = bool
+  default = false
+}
+
+variable "db_system_storage_details_system_type" {
+  description = "type"
+  type = string
+  default = "OCI_OPTIMIZED_STORAGE"
+}
+
+variable "db_system_credentials_password_details_password_type" {
+    description = "type"
+    type = string
+    default = "PLAIN_TEXT"
+}
+
+variable "db_system_instance_count" {
+  description = "instance count"
+  type = number
+  default = 1
+}
+
+variable "db_system_instance_memory_size_in_gbs" {
+  description = "RAM"
+  type = number
+  default = 16
+}
+
+variable "db_system_instance_ocpu_count" {
+  description = "OCPU count"
+  type = number
+  default = 2
 }
