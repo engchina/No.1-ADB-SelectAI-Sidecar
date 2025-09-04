@@ -27,3 +27,13 @@ data "template_cloudinit_config" "cloud_init" {
     content      = data.template_file.cloud_init_file.rendered
   }
 }
+
+# Get private subnet information to retrieve DNS label
+data "oci_core_subnet" "private_subnet" {
+  subnet_id = var.subnet_private_id
+}
+
+# Get VCN information to retrieve DNS label
+data "oci_core_vcn" "vcn" {
+  vcn_id = data.oci_core_subnet.private_subnet.vcn_id
+}

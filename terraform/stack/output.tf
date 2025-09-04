@@ -13,6 +13,10 @@ output "bucket_namespace" {
   value       = data.oci_objectstorage_namespace.tenant_namespace.namespace
 }
 
+output "admin_username" {
+    value = "admin"
+}
+
 output "db_password" {
     value = var.db_password
 }
@@ -47,7 +51,7 @@ output "wallet_file_location" {
 
 output "mysql_internal_fqdn" {
   description = "MySQL Internal FQDN"
-  value       = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.sub${substr(var.subnet_private_id, -10, 10)}.xinvcn.oraclevcn.com"
+  value       = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com"
 }
 
 output "postgresql_primary_endpoint_fqdn" {
@@ -63,4 +67,9 @@ output "ssh_to_instance" {
 output "application_url" {
   description = "convenient url to access the application"
   value       = "http://${oci_core_instance.generated_oci_core_instance.public_ip}:8080"
+}
+
+output "langfuse_url" {
+  description = "Langfuse URL for LLM observability"
+  value       = "http://${oci_core_instance.generated_oci_core_instance.public_ip}:3100"
 }

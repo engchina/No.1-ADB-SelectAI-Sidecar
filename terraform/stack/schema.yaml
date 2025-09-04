@@ -312,6 +312,11 @@ outputs:
     displayText: "Object Storage Bucket Namespace"
     type: copyableString
     visible: true
+  admin_username:
+    title: "Database Administrator Username"
+    displayText: "Database Administrator Username"
+    type: copyableString
+    visible: true
   adb_connection_string:
     title: "Autonomous Data Warehouse High Connection String"
     displayText: "Autonomous Data Warehouse High Connection String"
@@ -322,13 +327,28 @@ outputs:
     displayText: "Full Oracle Connection Descriptor (HIGH with MUTUAL TLS)"
     type: copyableString
     visible: true
+  mysql_internal_fqdn:
+    title: "MySQL Internal FQDN"
+    displayText: "MySQL Internal FQDN"
+    type: copyableString
+    visible: true
+  postgresql_primary_endpoint_fqdn:
+    title: "PostgreSQL Primary Endpoint FQDN"
+    displayText: "PostgreSQL Primary Endpoint FQDN"
+    type: copyableString
+    visible: true
   ssh_to_instance:
     title: "Convenient command to ssh to the instance"
     displayText: "Convenient command to ssh to the instance"
     type: copyableString
-    visible: true
+    visible: true    
   application_url:
-    title: "Application URL"
-    displayText: "Application URL"
+    title: "Dify URL"
+    displayText: "Dify URL"
+    type: copyableString
+    visible: true
+  langfuse_url:
+    title: "Langfuse URL"
+    displayText: "Langfuse URL for LLM observability"
     type: copyableString
     visible: true
