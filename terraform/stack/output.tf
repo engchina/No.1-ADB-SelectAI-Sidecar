@@ -35,16 +35,6 @@ output "adb_connection_string_full" {
   )
 }
 
-output "ssh_to_instance" {
-  description = "convenient command to ssh to the instance"
-  value       = "ssh -o ServerAliveInterval=10 ubuntu@${oci_core_instance.generated_oci_core_instance.public_ip}"
-}
-
-output "application_url" {
-  description = "convenient url to access the application"
-  value       = "http://${oci_core_instance.generated_oci_core_instance.public_ip}:8080"
-}
-
 output "adb_dsn" {
   description = "ADB DSN for connection"
   value       = "${lower(var.adb_name)}_high"
@@ -53,4 +43,24 @@ output "adb_dsn" {
 output "wallet_file_location" {
   description = "Location of the wallet file"
   value       = "${path.module}/wallet.zip"
+}
+
+output "mysql_internal_fqdn" {
+  description = "MySQL Internal FQDN"
+  value       = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.sub${substr(var.subnet_private_id, -10, 10)}.xinvcn.oraclevcn.com"
+}
+
+output "postgresql_primary_endpoint_fqdn" {
+  description = "PostgreSQL Primary endpoint FQDN"
+  value       = "primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com"
+}
+
+output "ssh_to_instance" {
+  description = "convenient command to ssh to the instance"
+  value       = "ssh -o ServerAliveInterval=10 ubuntu@${oci_core_instance.generated_oci_core_instance.public_ip}"
+}
+
+output "application_url" {
+  description = "convenient url to access the application"
+  value       = "http://${oci_core_instance.generated_oci_core_instance.public_ip}:8080"
 }

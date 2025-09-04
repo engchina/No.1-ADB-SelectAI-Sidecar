@@ -7,6 +7,7 @@ resource "oci_psql_db_system" "psql_db_system" {
     }
     shape = var.db_system_shape
     storage_details {
+        availability_domain = var.availability_domain
         is_regionally_durable = var.db_system_storage_details_is_regionally_durable
         system_type = var.db_system_storage_details_system_type
         #Optional
