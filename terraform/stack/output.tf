@@ -1,3 +1,8 @@
+output "current_region" {
+  description = "Current region where Resource Manager is running"
+  value       = local.current_region_name
+}
+
 output "bucket_name" {
   description = "The name of the created object storage bucket"
   value       = oci_objectstorage_bucket.dify_bucket.name

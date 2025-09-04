@@ -1,3 +1,4 @@
+# Get the current region where this Terraform is being executed
 data "oci_identity_availability_domains" "ads" {
   compartment_id = var.compartment_ocid
 }
@@ -8,8 +9,12 @@ data "oci_identity_tenancy" "current" {
 
 locals {
   # Get the current region name where this Terraform is being executed
-  # Extract region from availability domain name (format: region-AD-1)
-  current_region_name = substr(data.oci_identity_availability_domains.ads.availability_domains[0].name, 0, length(data.oci_identity_availability_domains.ads.availability_domains[0].name) - 5)
+  # Extract region from availability domain name and convert to lowercase
+  ad_name = data.oci_identity_availability_domains.ads.availability_domains[0].name
+  # Find colon position and extract region name after colon, remove -AD-1 suffix
+  colon_pos = index(local.ad_name, ":")
+  # Extract from after colon to before -AD-1 suffix
+  current_region_name = local.colon_pos != null ? lower(substr(local.ad_name, local.colon_pos + 1, length(local.ad_name) - local.colon_pos - 6)) : lower(substr(local.ad_name, 0, length(local.ad_name) - 5))
 }
 
 data "template_file" "cloud_init_file" {
