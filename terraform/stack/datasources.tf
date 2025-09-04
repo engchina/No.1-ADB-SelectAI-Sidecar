@@ -6,15 +6,10 @@ data "oci_identity_tenancy" "current" {
   tenancy_id = var.tenancy_ocid
 }
 
-data "oci_identity_regions" "current_region" {
-  filter {
-    name   = "key"
-    values = [data.oci_identity_tenancy.current.home_region_key]
-  }
-}
-
 locals {
-  current_region_name = data.oci_identity_regions.current_region.regions[0].name
+  # Get the current region name where this Terraform is being executed
+  # Extract region from availability domain name (format: region-AD-1)
+  current_region_name = substr(data.oci_identity_availability_domains.ads.availability_domains[0].name, 0, length(data.oci_identity_availability_domains.ads.availability_domains[0].name) - 5)
 }
 
 data "template_file" "cloud_init_file" {
