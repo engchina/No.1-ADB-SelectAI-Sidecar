@@ -1,0 +1,231 @@
+## Copyright © 2020, Oracle and/or its affiliates.
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+title: "Deploy Dify and Oracle Autonomous Database (ADB) Select AI Sidecar on Oracle Cloud Infrastructure (OCI)"
+stackDescription: "Set up the open-source LLM platform Dify alongside Oracle Autonomous Database (ADB) Select AI Sidecar on Oracle Cloud Infrastructure (OCI). This stack enables natural language to SQL, federated queries, and AI-powered data applications with seamless integration."
+schemaVersion: 1.1.0
+version: "20220422"
+locale: "en"
+
+variableGroups:
+  - title: Hidden
+    visible: false
+    variables:
+      - instance_boot_volume_size
+      - instance_boot_volume_vpus
+      - instance_flex_shape_memory
+      - instance_flex_shape_ocpus
+
+  - title: Required Configuration
+    visible: true
+    variables:
+      - region
+      - compartment_ocid
+      - availability_domain
+      - adb_name
+      - adb_password
+      - license_model
+      - instance_display_name
+      - vcn_ai_vcn_id
+      - subnet_public_id
+      - subnet_private_id
+      - ssh_authorized_keys
+      - bucket_name
+      - oci_access_key
+      - oci_secret_key
+      - dify_branch
+
+variables:
+  region:
+    title: Region
+    type: oci:identity:region:name
+    required: true
+    visible: false
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visible: true
+    title: "Create in compartment"
+
+  availability_domain:
+    type: oci:identity:availabilitydomain:name
+    required: false
+    visible: true
+    title: "Availability domain"
+    description: "Select availability domain. If left empty, the first available domain will be used automatically."
+    default: ""
+    dependsOn:
+      region: ${region}
+      compartmentId: ${compartment_ocid}
+
+  adb_name:
+    type: string
+    required: true
+    visible: true
+    title: "Database name"
+
+  adb_password:
+    type: password
+    required: true
+    visible: true
+    title: "Database password"
+    description: "Set the password for your Autonomous Database ADMIN user here."
+    # renders a second field to re-enter the password for confirmation
+    confirmation: true
+    pattern: "^(?!.*admin)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?!.*[\"]).{12,30}$"
+
+  license_model:
+    type: enum
+    required: true
+    visible: true
+    title: "Choose license"
+    enum:
+      - "BRING_YOUR_OWN_LICENSE"
+      - "LICENSE_INCLUDED"
+    default: "LICENSE_INCLUDED"
+
+  instance_display_name:
+    type: string
+    required: true
+    visible: true
+    title: "Compute instance name"
+
+  vcn_ai_vcn_id:
+    type: oci:core:vcn:id
+    required: true
+    visible: true
+    title: "VCN"
+    description: "Select existing virtual cloud network"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+
+  subnet_public_id:
+    type: oci:core:subnet:id
+    required: true
+    visible: true
+    title: "Public Subnet"
+    description: "Select existing public subnet for compute instances"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+      vcnId: ${vcn_ai_vcn_id}
+
+  subnet_private_id:
+    type: oci:core:subnet:id
+    required: true
+    visible: true
+    title: "Private Subnet"
+    description: "Select existing private subnet for database"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+      vcnId: ${vcn_ai_vcn_id}
+
+  ssh_authorized_keys:
+    type: oci:core:ssh:publickey
+    title: "Add SSH keys"
+    description: "Upload a public key that you already have."
+    required: true
+    visible: true
+
+  bucket_name:
+    type: string
+    required: true
+    visible: true
+    title: "Object Storage Bucket Name"
+    description: "Name of the bucket to be created for Dify"
+
+  oci_access_key:
+    type: string
+    required: true
+    visible: true
+    title: "OCI Access Key"
+    description: "OCI Object Storage Access Key for S3 compatibility"
+
+  oci_secret_key:
+    type: string
+    required: true
+    visible: true
+    title: "OCI Secret Key"
+    description: "OCI Object Storage Secret Key for S3 compatibility"
+
+  bucket_namespace:
+    type: string
+    required: false
+    visible: false
+    title: "Object Storage Namespace"
+    description: "Your OCI tenancy's object storage namespace (will be automatically detected if left blank)"
+
+  instance_image_source_id:
+    type: enum
+    required: true
+    visible: true
+    title: "Choose the image according to your region."
+    enum:
+      - "ocid1.image.oc1.ap-tokyo-1.aaaaaaaauig5vniqgg6ithp3t2iixkdbekipdyndz5dtzepno6g4uwn2cg2q"
+      - "ocid1.image.oc1.ap-osaka-1.aaaaaaaakubn2okgusevio3dcanojxysaeod42dkey2tilbr7bfvkiconb6q"
+      - "ocid1.image.oc1.us-chicago-1.aaaaaaaafrdmn335msygwxikywohkaxxscjicyf5cmhcnthqfnxwk3tlmuua"
+    default: "ocid1.image.oc1.ap-osaka-1.aaaaaaaakubn2okgusevio3dcanojxysaeod42dkey2tilbr7bfvkiconb6q"
+
+  instance_shape:
+    type: enum
+    required: true
+    visible: true
+    title: "Choose the shape."
+    enum:
+      - "VM.Standard.E4.Flex"
+      - "VM.Standard.E5.Flex"
+    default: "VM.Standard.E5.Flex"
+
+  instance_boot_volume_size:
+    visible: false
+  instance_boot_volume_vpus:
+    visible: false
+  instance_flex_shape_memory:
+    visible: false
+  instance_flex_shape_ocpus:
+    visible: false
+  dify_branch:
+    type: string
+    required: false
+    visible: true
+    title: "Dify Branch/Tag"
+    description: "Branch or tag name to use when cloning the Dify repository"
+    default: "1.8.0"
+
+outputs:
+  bucket_name:
+    title: "Object Storage Bucket Name"
+    displayText: "Object Storage Bucket Name"
+    type: copyableString
+    visible: true
+    value: ${oci_objectstorage_bucket.dify_bucket.name}
+  bucket_namespace:
+    title: "Object Storage Bucket Namespace"
+    displayText: "Object Storage Bucket Namespace"
+    type: copyableString
+    visible: true
+  bucket_region:
+    title: "Object Storage Bucket Region (Selected Region)"
+    displayText: "Object Storage Bucket Region (Selected Region)"
+    type: copyableString
+    visible: true
+  selected_region:
+    title: "Selected Region for Object Storage"
+    displayText: "Selected Region for Object Storage"
+    type: copyableString
+    visible: true
+  adb_connection_string:
+    title: "Autonomous Data Warehouse High Connection String"
+    displayText: "Autonomous Data Warehouse High Connection String"
+    type: copyableString
+    visible: true
+  ssh_to_instance:
+    title: "Convenient command to ssh to the instance"
+    displayText: "Convenient command to ssh to the instance"
+    type: copyableString
+    visible: true
+  application_url:
+    title: "Application URL"
+    displayText: "Application URL"
+    type: copyableString
+    visible: true

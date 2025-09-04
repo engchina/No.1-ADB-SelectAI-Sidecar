@@ -65,5 +65,5 @@ runcmd:
   - echo "ADB initialization completed"
   - echo "Downloading and running init script..."
   - cd /u01/aidify
-  - git clone -b main https://github.com/engchina/No.1-Terraform-Dify.git; cd No.1-Terraform-Dify
+  - git clone -b main https://github.com/engchina/ADB-SelectAI-Sidecar.git; cd No.1-ADB-SelectAI-Sidecar
   - nohup bash init_script.sh >> /var/log/cloud-init-custom.log 2>&1 &
