@@ -1,0 +1,69 @@
+#cloud-config
+output: {all: '| tee -a /var/log/cloud-init-custom.log'}
+bootcmd:
+  - echo "Starting boot command..."
+  - mkdir -p /u01/aidify/props
+packages:
+  - git
+  - unzip
+  - curl
+  - ca-certificates
+write_files:
+  - path: "/u01/aidify/props/bucket_name.txt"
+    permissions: "0644"
+    content: |
+      ${bucket_name}
+  - path: "/u01/aidify/props/bucket_namespace.txt"
+    permissions: "0644"
+    content: |
+      ${bucket_namespace}
+  - path: "/u01/aidify/props/bucket_region.txt"
+    permissions: "0644"
+    content: |
+      ${bucket_region}
+  - path: "/u01/aidify/props/oci_access_key.txt"
+    permissions: "0644"
+    content: |
+      ${oci_access_key}
+  - path: "/u01/aidify/props/oci_secret_key.txt"
+    permissions: "0644"
+    content: |
+      ${oci_secret_key}
+  - path: "/u01/aidify/props/wallet.zip"
+    permissions: "0644"
+    encoding: base64
+    content: |
+      ${oci_database_autonomous_database_wallet_content}
+  - path: "/u01/aidify/props/adb_password.txt"
+    permissions: "0644"
+    content: ${oci_database_autonomous_database_password}
+  - path: "/u01/aidify/props/adb_dsn.txt"
+    permissions: "0644"
+    content: ${oci_database_autonomous_database_dsn}
+  - path: "/u01/aidify/props/wallet_password.txt"
+    permissions: "0644"
+    content: ${oci_database_autonomous_database_password}
+  - path: "/u01/aidify/props/dify_branch.txt"
+    permissions: "0644"
+    content: |
+      ${dify_branch}
+runcmd:
+  - echo "Running aidify init..."
+  - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
+  - iptables -I INPUT 7 -m state --state NEW -p tcp --dport 5001 -j ACCEPT
+  - netfilter-persistent save
+  - echo "Setting up ADB wallet and executing SQL..."
+  - cd /u01/aidify/props
+  - unzip -o wallet.zip -d wallet
+  - sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aidify/props/wallet"|g' wallet/sqlnet.ora
+  - export TNS_ADMIN=/u01/aidify/props/wallet
+  - echo "TNS_ADMIN=$TNS_ADMIN"
+  - ls -la $TNS_ADMIN
+  - cat $TNS_ADMIN/sqlnet.ora
+  - cat $TNS_ADMIN/tnsnames.ora
+  - echo -e "BEGIN\nCTX_DDL.CREATE_PREFERENCE('world_lexer','WORLD_LEXER');\nEND;\n/\nexit;" | sqlplus -S ADMIN/$(cat adb_password.txt)@$(cat adb_dsn.txt)
+  - echo "ADB initialization completed"
+  - echo "Downloading and running init script..."
+  - cd /u01/aidify
+  - git clone -b main https://github.com/engchina/No.1-Terraform-Dify.git; cd No.1-Terraform-Dify
+  - nohup bash init_script.sh >> /var/log/cloud-init-custom.log 2>&1 &
