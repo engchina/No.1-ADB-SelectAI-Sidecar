@@ -1,22 +1,3 @@
-# Get the current region where this Terraform is being executed
-data "oci_identity_availability_domains" "ads" {
-  compartment_id = var.compartment_ocid
-}
-
-data "oci_identity_tenancy" "current" {
-  tenancy_id = var.tenancy_ocid
-}
-
-locals {
-  # Get the current region name where this Terraform is being executed
-  # Extract region from availability domain name and convert to lowercase
-  ad_name = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  # Find colon position and extract region name after colon, remove -AD-1 suffix
-  colon_pos = index(local.ad_name, ":")
-  # Extract from after colon to before -AD-1 suffix
-  current_region_name = local.colon_pos != null ? lower(substr(local.ad_name, local.colon_pos + 1, length(local.ad_name) - local.colon_pos - 6)) : lower(substr(local.ad_name, 0, length(local.ad_name) - 5))
-}
-
 data "template_file" "cloud_init_file" {
   template = file("./cloud_init/bootstrap.template.yaml")
 
@@ -26,9 +7,9 @@ data "template_file" "cloud_init_file" {
     oci_database_autonomous_database_password = var.adb_password
     oci_database_autonomous_database_dsn = "${lower(var.adb_name)}_high"
     output_compartment_ocid = var.compartment_ocid
-    bucket_name = var.bucket_name
+    bucket_region = var.bucket_region
+    bucket_name   = var.bucket_name
     bucket_namespace = data.oci_objectstorage_namespace.tenant_namespace.namespace
-    bucket_region = local.current_region_name
     oci_access_key = var.oci_access_key
     oci_secret_key = var.oci_secret_key
     dify_branch = var.dify_branch

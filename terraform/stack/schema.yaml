@@ -30,6 +30,7 @@ variableGroups:
       - subnet_public_id
       - subnet_private_id
       - ssh_authorized_keys
+      - bucket_region
       - bucket_name
       - oci_access_key
       - oci_secret_key
@@ -50,11 +51,9 @@ variables:
 
   availability_domain:
     type: oci:identity:availabilitydomain:name
-    required: false
+    required: true
     visible: true
     title: "Availability domain"
-    description: "Select availability domain. If left empty, the first available domain will be used automatically."
-    default: ""
     dependsOn:
       region: ${region}
       compartmentId: ${compartment_ocid}
@@ -127,6 +126,18 @@ variables:
     required: true
     visible: true
 
+  bucket_region:
+    type: enum
+    required: true
+    visible: true
+    title: "Region for Object Storage"
+    description: "Select the region where Object Storage bucket will be created"
+    enum:
+      - "ap-osaka-1"
+      - "ap-tokyo-1"
+      - "us-ashburn-1"
+    default: "ap-osaka-1"
+
   bucket_name:
     type: string
     required: true
@@ -193,6 +204,11 @@ variables:
     default: "1.8.0"
 
 outputs:
+  bucket_region:
+    title: "Object Storage Bucket Region (Selected Region)"
+    displayText: "Object Storage Bucket Region (Selected Region)"
+    type: copyableString
+    visible: true
   bucket_name:
     title: "Object Storage Bucket Name"
     displayText: "Object Storage Bucket Name"
@@ -202,16 +218,6 @@ outputs:
   bucket_namespace:
     title: "Object Storage Bucket Namespace"
     displayText: "Object Storage Bucket Namespace"
-    type: copyableString
-    visible: true
-  bucket_region:
-    title: "Object Storage Bucket Region (Selected Region)"
-    displayText: "Object Storage Bucket Region (Selected Region)"
-    type: copyableString
-    visible: true
-  selected_region:
-    title: "Selected Region for Object Storage"
-    displayText: "Selected Region for Object Storage"
     type: copyableString
     visible: true
   adb_connection_string:

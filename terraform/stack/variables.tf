@@ -1,10 +1,5 @@
 variable "availability_domain" {
   default = ""
-  description = "Availability domain name. If empty, the first available domain will be used automatically."
-}
-
-variable "tenancy_ocid" {
-  default = ""
 }
 
 variable "compartment_ocid" {
@@ -28,7 +23,7 @@ variable "instance_display_name" {
 }
 
 variable "instance_shape" {
-  default = "VM.Standard.E4.Flex"
+  default = "VM.Standard.E5.Flex"
 }
 
 variable "instance_flex_shape_ocpus" {
@@ -63,6 +58,10 @@ variable "ssh_authorized_keys" {
   default = ""
 }
 
+variable "bucket_region" {
+  default = "ap-osaka-1"
+}
+
 variable "bucket_name" {
   default = "dify-bucket"
 }
@@ -80,5 +79,5 @@ variable "oci_secret_key" {
 }
 
 variable "dify_branch" {
-  default = "1.7.2"
+  default = "1.8.0"
 }

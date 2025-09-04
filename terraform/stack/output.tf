@@ -1,6 +1,6 @@
-output "current_region" {
-  description = "Current region where Resource Manager is running"
-  value       = local.current_region_name
+output "bucket_region" {
+  description = "Bucket region where Resource Manager is running"
+  value       = var.bucket_region
 }
 
 output "bucket_name" {

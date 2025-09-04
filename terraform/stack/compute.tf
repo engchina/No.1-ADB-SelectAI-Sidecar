@@ -7,7 +7,7 @@ resource "oci_core_instance" "generated_oci_core_instance" {
     is_live_migration_preferred = "false"
     recovery_action             = "STOP_INSTANCE"
   }
-  availability_domain = var.availability_domain != "" ? var.availability_domain : data.oci_identity_availability_domains.ads.availability_domains[0].name
+  availability_domain = var.availability_domain
   compartment_id      = var.compartment_ocid
   create_vnic_details {
     assign_ipv6ip             = "false"
