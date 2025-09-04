@@ -16,7 +16,7 @@ resource "null_resource" "bucket_cleanup" {
   triggers = {
     bucket_name = oci_objectstorage_bucket.dify_bucket.name
     namespace   = oci_objectstorage_bucket.dify_bucket.namespace
-    region      = data.oci_identity_tenancy.current.home_region_key
+    region      = local.current_region_name
   }
 
   provisioner "local-exec" {

@@ -6,6 +6,17 @@ data "oci_identity_tenancy" "current" {
   tenancy_id = var.tenancy_ocid
 }
 
+data "oci_identity_regions" "current_region" {
+  filter {
+    name   = "key"
+    values = [data.oci_identity_tenancy.current.home_region_key]
+  }
+}
+
+locals {
+  current_region_name = data.oci_identity_regions.current_region.regions[0].name
+}
+
 data "template_file" "cloud_init_file" {
   template = file("./cloud_init/bootstrap.template.yaml")
 
@@ -17,7 +28,7 @@ data "template_file" "cloud_init_file" {
     output_compartment_ocid = var.compartment_ocid
     bucket_name = var.bucket_name
     bucket_namespace = data.oci_objectstorage_namespace.tenant_namespace.namespace
-    bucket_region = data.oci_identity_tenancy.current.home_region_key
+    bucket_region = local.current_region_name
     oci_access_key = var.oci_access_key
     oci_secret_key = var.oci_secret_key
     dify_branch = var.dify_branch
