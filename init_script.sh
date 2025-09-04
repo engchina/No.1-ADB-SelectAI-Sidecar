@@ -261,18 +261,18 @@ sed -i "s|      - oracle|      - oracle-skip|g" docker-compose.yaml
 log "Configuring OCI object storage..."
 sed -i "s|STORAGE_TYPE=opendal|STORAGE_TYPE=oci-storage|g" .env
 
-# 配置 OCI 对象存储环境变量
-log "设置 OCI 对象存储环境变量..."
+# Configure OCI object storage environment variables
+log "Setting up OCI object storage environment variables..."
 OCI_ENDPOINT=https://${BUCKET_NAMESPACE}.compat.objectstorage.${BUCKET_REGION}.oraclecloud.com
 OCI_BUCKET_NAME=${BUCKET_NAME}
 OCI_REGION=${BUCKET_REGION}
 
-log "OCI 端点: $OCI_ENDPOINT"
-log "OCI 存储桶: $OCI_BUCKET_NAME"
-log "OCI 区域: $OCI_REGION"
+log "OCI endpoint: $OCI_ENDPOINT"
+log "OCI bucket: $OCI_BUCKET_NAME"
+log "OCI region: $OCI_REGION"
 
-# 应用 OCI 配置到 .env 文件
-log "应用 OCI 配置到环境文件..."
+# Apply OCI configuration to .env file
+log "Applying OCI configuration to environment file..."
 sed -i "s|OCI_ENDPOINT=.*|OCI_ENDPOINT=${OCI_ENDPOINT}|g" .env
 sed -i "s|OCI_BUCKET_NAME=.*|OCI_BUCKET_NAME=${OCI_BUCKET_NAME}|g" .env
 sed -i "s|OCI_ACCESS_KEY=.*|OCI_ACCESS_KEY=${OCI_ACCESS_KEY}|g" .env
