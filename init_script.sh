@@ -2,7 +2,38 @@
 echo "Initializing application setup..."
 
 # Move to source directory
-cd /u01/aidify/No.1-Terraform-Dify
+cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+
+# Download and configure instantclient
+echo "Setting up Oracle Instant Client..."
+mkdir -p /u01/aipoc
+wget https://download.oracle.com/otn_software/linux/instantclient/2380000/instantclient-basic-linux.x64-23.8.0.25.04.zip -O /u01/aipoc/instantclient-basic-linux.x64-23.8.0.25.04.zip
+unzip /u01/aipoc/instantclient-basic-linux.x64-23.8.0.25.04.zip -d /u01/aipoc/
+wget http://ftp.de.debian.org/debian/pool/main/liba/libaio/libaio1_0.3.113-4_amd64.deb -O /u01/aipoc/libaio1_0.3.113-4_amd64.deb
+dpkg -i /u01/aipoc/libaio1_0.3.113-4_amd64.deb
+sh -c "echo /u01/aipoc/instantclient_23_8 > /etc/ld.so.conf.d/oracle-instantclient.conf"
+ldconfig
+echo 'export LD_LIBRARY_PATH=/u01/aipoc/instantclient_23_8:$LD_LIBRARY_PATH' >> /etc/profile
+echo 'export PATH=/u01/aipoc/instantclient_23_8:$PATH' >> /etc/profile
+source /etc/profile
+export LD_LIBRARY_PATH=/u01/aipoc/instantclient_23_8:$LD_LIBRARY_PATH
+export PATH=/u01/aipoc/instantclient_23_8:$PATH
+
+# Setting up ADB wallet and executing SQL
+echo "Setting up ADB wallet and executing SQL..."
+cd /u01/aidify/props
+unzip -o wallet.zip -d wallet
+sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aidify/props/wallet"|g' wallet/sqlnet.ora
+export TNS_ADMIN=/u01/aidify/props/wallet
+echo "TNS_ADMIN=$TNS_ADMIN"
+ls -la $TNS_ADMIN
+cat $TNS_ADMIN/sqlnet.ora
+cat $TNS_ADMIN/tnsnames.ora
+echo -e "BEGIN\nCTX_DDL.CREATE_PREFERENCE('world_lexer','WORLD_LEXER');\nEND;\n/\nexit;" | sqlplus -S ADMIN/$(cat adb_password.txt)@$(cat adb_dsn.txt)
+echo "ADB initialization completed"
+
+# Return to source directory
+cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
 
 # Docker setup
 chmod +x ./install_docker.sh

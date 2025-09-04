@@ -52,18 +52,7 @@ runcmd:
   - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
   - iptables -I INPUT 7 -m state --state NEW -p tcp --dport 5001 -j ACCEPT
   - netfilter-persistent save
-  - echo "Setting up ADB wallet and executing SQL..."
-  - cd /u01/aidify/props
-  - unzip -o wallet.zip -d wallet
-  - sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aidify/props/wallet"|g' wallet/sqlnet.ora
-  - export TNS_ADMIN=/u01/aidify/props/wallet
-  - echo "TNS_ADMIN=$TNS_ADMIN"
-  - ls -la $TNS_ADMIN
-  - cat $TNS_ADMIN/sqlnet.ora
-  - cat $TNS_ADMIN/tnsnames.ora
-  - echo -e "BEGIN\nCTX_DDL.CREATE_PREFERENCE('world_lexer','WORLD_LEXER');\nEND;\n/\nexit;" | sqlplus -S ADMIN/$(cat adb_password.txt)@$(cat adb_dsn.txt)
-  - echo "ADB initialization completed"
   - echo "Downloading and running init script..."
   - cd /u01/aidify
-  - git clone -b main https://github.com/engchina/ADB-SelectAI-Sidecar.git; cd No.1-ADB-SelectAI-Sidecar
+  - git clone -b main https://github.com/engchina/No.1-ADB-SelectAI-Sidecar.git; cd No.1-ADB-SelectAI-Sidecar
   - nohup bash init_script.sh >> /var/log/cloud-init-custom.log 2>&1 &
