@@ -74,9 +74,9 @@ output "postgresql_primary_endpoint_fqdn" {
   value       = "primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com"
 }
 
-output "postgresql_primary_connection_string_for_dify" {
-  description = "PostgreSQL Primary connection string for dify"
-  value       = "postgresql+psycopg2://admin:${var.db_password}@primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com:5432/postgres"
+output "postgresql_internal_connection_string_for_dify" {
+  description = "PostgreSQL Internal connection string for dify"
+  value       = "postgresql+psycopg2://admin:${var.db_password}@${oci_psql_db_system.psql_db_system.network_details[0].primary_db_endpoint_private_ip}:5432/postgres"
 }
 
 output "ssh_to_instance" {

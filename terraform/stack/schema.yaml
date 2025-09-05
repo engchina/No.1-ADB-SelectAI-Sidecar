@@ -347,9 +347,9 @@ outputs:
     displayText: "PostgreSQL Primary Endpoint FQDN"
     type: copyableString
     visible: true
-  postgresql_primary_connection_string_for_dify:
-    title: "PostgreSQL Primary Connection String for Dify"
-    displayText: "PostgreSQL Primary Connection String for Dify"
+  postgresql_internal_connection_string_for_dify:
+    title: "PostgreSQL Internal Connection String for Dify"
+    displayText: "PostgreSQL Internal Connection String for Dify"
     type: copyableString
     visible: true    
   ssh_to_instance:
