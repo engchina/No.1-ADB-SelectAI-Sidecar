@@ -3,7 +3,6 @@ output: {all: '| tee -a /var/log/cloud-init-custom.log'}
 bootcmd:
   - echo "Starting boot command..."
   - mkdir -p /u01/aipoc/props
-  # Wait for network connectivity before proceeding
   - until ping -c1 archive.ubuntu.com &>/dev/null; do sleep 2; done
 write_files:
   - path: "/u01/aipoc/props/bucket_name.txt"
@@ -64,18 +63,24 @@ runcmd:
   # Wait for system to fully initialize
   - echo "Waiting for system initialization..."
   - sleep 30
-  # Stop any conflicting package management services
-  - systemctl is-active --quiet apt-daily.service && systemctl stop apt-daily.service || true
-  - systemctl is-active --quiet apt-daily-upgrade.service && systemctl stop apt-daily-upgrade.service || true
-  - systemctl is-active --quiet unattended-upgrades.service && systemctl stop unattended-upgrades.service || true
-  # Install required packages with retry mechanism
+  # Wait for apt lock to be released
+  - while sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do echo "Waiting for apt lock to be released..."; sleep 5; done
+  # Install required packages with robust error handling
   - echo "Installing required packages..."
-  - apt-get update || (sleep 10 && apt-get update) || echo "Package update failed, continuing..."
-  - DEBIAN_FRONTEND=noninteractive apt-get install -y git unzip curl ca-certificates || echo "Some packages failed to install, continuing..."
+  - |
+    sudo apt-get update -y || {
+      echo "APT update failed, attempting to fix..."
+      sudo rm -f /var/lib/apt/lists/lock
+      sudo rm -f /var/cache/apt/archives/lock
+      sudo rm -f /var/lib/dpkg/lock*
+      sudo dpkg --configure -a
+      sudo apt-get update -y
+    }
+  - DEBIAN_FRONTEND=noninteractive sudo apt-get install -y git unzip curl ca-certificates || echo "Some packages failed to install, continuing..."
   # Verify critical packages are available
   - which git || (echo "Git not found, attempting alternative installation..." && snap install git --classic) || echo "Git installation failed"
   - which curl || echo "Curl not available, some features may not work"
-  - echo "Running aidify init..."
+  - echo "Running aipoc init..."
   - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
   - iptables -I INPUT 7 -m state --state NEW -p tcp --dport 5001 -j ACCEPT
   - iptables -I INPUT 8 -m state --state NEW -p tcp --dport 3100 -j ACCEPT
