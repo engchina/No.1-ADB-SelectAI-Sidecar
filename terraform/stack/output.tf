@@ -61,17 +61,17 @@ output "adb_connection_string_for_dify" {
 
 output "mysql_internal_fqdn" {
   description = "MySQL Internal FQDN"
-  value       = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com"
+  value       = local.mysql_internal_fqdn
 }
 
 output "mysql_internal_connection_string_for_dify" {
   description = "MySQL Internal connection string for dify"
-  value       = "mysql+pymysql://admin:${var.db_password}@${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com:3306"
+  value       = "mysql+pymysql://admin:${var.db_password}@${local.mysql_internal_fqdn}:3306/myapp"
 }
 
 output "postgresql_primary_endpoint_fqdn" {
   description = "PostgreSQL Primary endpoint FQDN"
-  value       = "primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com"
+  value       = local.postgresql_primary_endpoint_fqdn
 }
 
 output "postgresql_internal_connection_string_for_dify" {

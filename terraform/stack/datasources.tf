@@ -1,3 +1,8 @@
+locals {
+  mysql_internal_fqdn = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com"
+  postgresql_primary_endpoint_fqdn = "primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com"
+}
+
 data "template_file" "cloud_init_file" {
   template = file("./cloud_init/bootstrap.template.yaml")
 
@@ -13,6 +18,10 @@ data "template_file" "cloud_init_file" {
     oci_access_key = var.oci_access_key
     oci_secret_key = var.oci_secret_key
     dify_branch = var.dify_branch
+    mysql_hostname = local.mysql_internal_fqdn
+    mysql_password = var.db_password
+    postgresql_hostname = local.postgresql_primary_endpoint_fqdn
+    postgresql_password = var.db_password
   }
 }
 

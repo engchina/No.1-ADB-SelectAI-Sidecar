@@ -1,7 +1,9 @@
 resource "oci_core_instance" "generated_oci_core_instance" {
   depends_on = [
     oci_database_autonomous_database.generated_database_autonomous_database,
-    local_file.generated_autonomous_data_warehouse_wallet_file
+    local_file.generated_autonomous_data_warehouse_wallet_file,
+    oci_mysql_mysql_db_system.mysql_db_system,
+    oci_psql_db_system.psql_db_system
   ]
   availability_config {
     is_live_migration_preferred = "false"

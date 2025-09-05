@@ -63,6 +63,57 @@ verify_file() {
 log "Switching to source directory..."
 cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
 
+# Connect to MySQL and create database
+log "Connecting to MySQL and creating database..."
+
+# Read MySQL connection information
+cd /u01/aidify/props
+verify_file "mysql_hostname.txt"
+verify_file "mysql_password.txt"
+
+MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
+MYSQL_PASSWORD=$(cat mysql_password.txt)
+
+log "MySQL hostname: $MYSQL_HOSTNAME"
+
+# Return to source directory
+cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+
+# Wait for MySQL service to be ready
+max_mysql_attempts=30
+mysql_wait_time=10
+
+for attempt in $(seq 1 $max_mysql_attempts); do
+    log "Attempting to connect to MySQL (attempt $attempt/$max_mysql_attempts)..."
+    
+    # Try to connect to MySQL
+    if mysql -h "$MYSQL_HOSTNAME" -P 3306 -u admin -p"$MYSQL_PASSWORD" -e "SELECT 1;" >/dev/null 2>&1; then
+        log "MySQL connection successful"
+        break
+    fi
+    
+    if [ $attempt -lt $max_mysql_attempts ]; then
+        log "MySQL not ready yet, waiting ${mysql_wait_time}s before retry..."
+        sleep $mysql_wait_time
+    else
+        log_error "Failed to connect to MySQL after $max_mysql_attempts attempts"
+        exit 1
+    fi
+done
+
+# Create database
+log "Creating myapp database..."
+mysql -h "$MYSQL_HOSTNAME" -P 3306 -u admin -p"$MYSQL_PASSWORD" -e "
+CREATE DATABASE IF NOT EXISTS myapp
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+" || {
+    log_error "Failed to create database"
+    exit 1
+}
+
+log "Database myapp created successfully"
+
 # Download and configure Oracle Instant Client
 log "Setting up Oracle Instant Client..."
 mkdir -p /u01/aipoc
@@ -158,6 +209,52 @@ else
     log_error "ADB initialization failed"
     exit 1
 fi
+
+log "Creating MySQL and PostgreSQL credentials and database links..."
+
+# Get MySQL and PostgreSQL connection info from files
+cd /u01/aidify/props
+verify_file "mysql_hostname.txt"
+verify_file "mysql_password.txt"
+verify_file "postgresql_hostname.txt"
+verify_file "postgresql_password.txt"
+
+MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
+MYSQL_PASSWORD=$(cat mysql_password.txt)
+POSTGRESQL_HOSTNAME=$(cat postgresql_hostname.txt)
+POSTGRESQL_PASSWORD=$(cat postgresql_password.txt)
+
+# Return to script directory
+cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+
+if [ -z "$MYSQL_HOSTNAME" ] || [ -z "$POSTGRESQL_HOSTNAME" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$POSTGRESQL_PASSWORD" ]; then
+    log_error "Failed to get database connection information from files"
+    exit 1
+fi
+
+log "MySQL Hostname: $MYSQL_HOSTNAME"
+log "PostgreSQL Hostname: $POSTGRESQL_HOSTNAME"
+
+# Create MySQL credential and database link
+log "Creating MySQL credential and database link..."
+if echo -e "BEGIN\n    DBMS_CLOUD.CREATE_CREDENTIAL(\n        credential_name => 'MYSQL_CRED',\n        username        => 'admin',\n        password        => '${MYSQL_PASSWORD}'\n    );\nEND;\n/\n\nBEGIN\n    DBMS_CLOUD_ADMIN.CREATE_DATABASE_LINK(\n        db_link_name       => 'MYSQL_LINK',\n        hostname           => '${MYSQL_HOSTNAME}',\n        port               => '3306',\n        service_name       => 'myapp',\n        ssl_server_cert_dn => NULL,\n        credential_name    => 'MYSQL_CRED',\n        private_target     => TRUE,\n        gateway_params     => JSON_OBJECT(\n            'db_type' VALUE 'mysql'\n        )\n    );\nEND;\n/\nexit;" | sqlplus -S ADMIN/${ADB_PASSWORD}@${ADB_DSN}; then
+    log "MySQL credential and database link created successfully"
+else
+    log_error "Failed to create MySQL credential and database link"
+    exit 1
+fi
+
+# Create PostgreSQL credential and database link
+log "Creating PostgreSQL credential and database link..."
+if echo -e "BEGIN\n    DBMS_CLOUD.CREATE_CREDENTIAL(\n        credential_name => 'POSTGRES_CRED',\n        username        => 'admin',\n        password        => '${POSTGRESQL_PASSWORD}'\n    );\nEND;\n/\n\nBEGIN\n    DBMS_CLOUD_ADMIN.CREATE_DATABASE_LINK(\n        db_link_name       => 'POSTGRES_LINK',\n        hostname           => '${POSTGRESQL_HOSTNAME}',\n        port               => '5432',\n        service_name       => 'postgres',\n        ssl_server_cert_dn => NULL,\n        credential_name    => 'POSTGRES_CRED',\n        private_target     => TRUE,\n        gateway_params     => JSON_OBJECT(\n            'db_type'    VALUE 'postgres',\n            'enable_ssl' VALUE true\n        )\n    );\nEND;\n/\nexit;" | sqlplus -S ADMIN/${ADB_PASSWORD}@${ADB_DSN}; then
+    log "PostgreSQL credential and database link created successfully"
+else
+    log_error "Failed to create PostgreSQL credential and database link"
+    exit 1
+fi
+
+log "All database credentials and links created successfully"
+
 
 # Return to source directory
 log "Returning to source directory..."
@@ -427,6 +524,7 @@ for attempt in $(seq 1 $max_service_attempts); do
 done
 
 # Application setup
+log "Returning to source directory..."
 cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
 sed -i "s|localhost:3100|$EXTERNAL_IP:3100|g" ./langfuse/docker-compose.yml
 chmod +x ./langfuse/main.sh

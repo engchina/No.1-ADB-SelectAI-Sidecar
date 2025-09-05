@@ -8,6 +8,7 @@ packages:
   - unzip
   - curl
   - ca-certificates
+  - mysql-client
 write_files:
   - path: "/u01/aidify/props/bucket_name.txt"
     permissions: "0644"
@@ -47,6 +48,22 @@ write_files:
     permissions: "0644"
     content: |
       ${dify_branch}
+  - path: "/u01/aidify/props/mysql_hostname.txt"
+    permissions: "0644"
+    content: |
+      ${mysql_hostname}
+  - path: "/u01/aidify/props/mysql_password.txt"
+    permissions: "0644"
+    content: |
+      ${mysql_password}
+  - path: "/u01/aidify/props/postgresql_hostname.txt"
+    permissions: "0644"
+    content: |
+      ${postgresql_hostname}
+  - path: "/u01/aidify/props/postgresql_password.txt"
+    permissions: "0644"
+    content: |
+      ${postgresql_password}
 runcmd:
   - echo "Running aidify init..."
   - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
