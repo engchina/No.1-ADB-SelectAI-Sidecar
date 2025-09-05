@@ -79,6 +79,11 @@ log "MySQL hostname: $MYSQL_HOSTNAME"
 # Return to source directory
 cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
 
+# Install MySQL client
+log "Installing MySQL client..."
+sudo apt-get update
+sudo apt-get install -y mysql-client
+
 # Wait for MySQL service to be ready
 max_mysql_attempts=30
 mysql_wait_time=10
@@ -254,7 +259,6 @@ else
 fi
 
 log "All database credentials and links created successfully"
-
 
 # Return to source directory
 log "Returning to source directory..."

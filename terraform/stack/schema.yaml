@@ -40,6 +40,7 @@ variableGroups:
       - vcn_ai_vcn_id
       - subnet_private_id
       - subnet_public_id
+      - instance_shape
       - ssh_authorized_keys
       - bucket_region
       - bucket_name
@@ -225,7 +226,7 @@ variables:
 
   dify_branch:
     type: string
-    required: false
+    required: true
     visible: true
     title: "Dify Branch/Tag"
     description: "Branch or tag name to use when cloning the Dify repository"
@@ -357,7 +358,7 @@ outputs:
     displayText: "Convenient command to ssh to the instance"
     type: copyableString
     visible: true    
-  application_url:
+  dify_url:
     title: "Dify URL"
     displayText: "Dify URL"
     type: copyableString

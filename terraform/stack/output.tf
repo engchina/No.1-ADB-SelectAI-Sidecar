@@ -80,12 +80,12 @@ output "postgresql_internal_connection_string_for_dify" {
 }
 
 output "ssh_to_instance" {
-  description = "convenient command to ssh to the instance"
+  description = "Command to ssh to the instance"
   value       = "ssh -o ServerAliveInterval=10 ubuntu@${oci_core_instance.generated_oci_core_instance.public_ip}"
 }
 
-output "application_url" {
-  description = "convenient url to access the application"
+output "dify_url" {
+  description = "URL to access the dify"
   value       = "http://${oci_core_instance.generated_oci_core_instance.public_ip}:8080"
 }
 
