@@ -61,13 +61,13 @@ verify_file() {
 
 # Move to source directory
 log "Switching to source directory..."
-cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
 # Connect to MySQL and create database
 log "Connecting to MySQL and creating database..."
 
 # Read MySQL connection information
-cd /u01/aidify/props
+cd /u01/aipoc/props
 verify_file "mysql_hostname.txt"
 verify_file "mysql_password.txt"
 
@@ -77,7 +77,7 @@ MYSQL_PASSWORD=$(cat mysql_password.txt)
 log "MySQL hostname: $MYSQL_HOSTNAME"
 
 # Return to source directory
-cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
 # Install MySQL client
 log "Installing MySQL client..."
@@ -178,7 +178,7 @@ fi
 
 # Setup ADB wallet and execute SQL
 log "Setting up ADB wallet and executing SQL..."
-cd /u01/aidify/props
+cd /u01/aipoc/props
 
 # Verify required files exist
 verify_file "wallet.zip"
@@ -190,8 +190,8 @@ unzip -o wallet.zip -d wallet
 
 # Configure wallet path
 log "Configuring wallet path..."
-sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aidify/props/wallet"|g' wallet/sqlnet.ora
-export TNS_ADMIN=/u01/aidify/props/wallet
+sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aipoc/props/wallet"|g' wallet/sqlnet.ora
+export TNS_ADMIN=/u01/aipoc/props/wallet
 
 log "TNS_ADMIN=$TNS_ADMIN"
 log "Wallet file list:"
@@ -218,7 +218,7 @@ fi
 log "Creating MySQL and PostgreSQL credentials and database links..."
 
 # Get MySQL and PostgreSQL connection info from files
-cd /u01/aidify/props
+cd /u01/aipoc/props
 verify_file "mysql_hostname.txt"
 verify_file "mysql_password.txt"
 verify_file "postgresql_hostname.txt"
@@ -230,7 +230,7 @@ POSTGRESQL_HOSTNAME=$(cat postgresql_hostname.txt)
 POSTGRESQL_PASSWORD=$(cat postgresql_password.txt)
 
 # Return to script directory
-cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
 if [ -z "$MYSQL_HOSTNAME" ] || [ -z "$POSTGRESQL_HOSTNAME" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$POSTGRESQL_PASSWORD" ]; then
     log_error "Failed to get database connection information from files"
@@ -262,7 +262,7 @@ log "All database credentials and links created successfully"
 
 # Return to source directory
 log "Returning to source directory..."
-cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
 # Docker setup
 log "Setting up Docker..."
@@ -297,18 +297,18 @@ fi
 log "Cloning and installing Dify..."
 
 # Verify required configuration files
-verify_file "/u01/aidify/props/dify_branch.txt"
-verify_file "/u01/aidify/props/db_password.txt"
-verify_file "/u01/aidify/props/adb_dsn.txt"
-verify_file "/u01/aidify/props/wallet_password.txt"
-verify_file "/u01/aidify/props/bucket_namespace.txt"
-verify_file "/u01/aidify/props/bucket_name.txt"
-verify_file "/u01/aidify/props/bucket_region.txt"
-verify_file "/u01/aidify/props/oci_access_key.txt"
-verify_file "/u01/aidify/props/oci_secret_key.txt"
+verify_file "/u01/aipoc/props/dify_branch.txt"
+verify_file "/u01/aipoc/props/db_password.txt"
+verify_file "/u01/aipoc/props/adb_dsn.txt"
+verify_file "/u01/aipoc/props/wallet_password.txt"
+verify_file "/u01/aipoc/props/bucket_namespace.txt"
+verify_file "/u01/aipoc/props/bucket_name.txt"
+verify_file "/u01/aipoc/props/bucket_region.txt"
+verify_file "/u01/aipoc/props/oci_access_key.txt"
+verify_file "/u01/aipoc/props/oci_secret_key.txt"
 
 # Read configuration
-DIFY_BRANCH=$(cat /u01/aidify/props/dify_branch.txt)
+DIFY_BRANCH=$(cat /u01/aipoc/props/dify_branch.txt)
 log "Using Dify branch: $DIFY_BRANCH"
 
 # Clone Dify repository
@@ -324,14 +324,14 @@ cd dify/docker
 
 # Get OCI configuration
 log "Reading OCI configuration..."
-ORACLE_PASSWORD=$(cat /u01/aidify/props/db_password.txt)
-ORACLE_DSN=$(cat /u01/aidify/props/adb_dsn.txt)
-ORACLE_WALLET_PASSWORD=$(cat /u01/aidify/props/wallet_password.txt)
-BUCKET_NAMESPACE=$(cat /u01/aidify/props/bucket_namespace.txt)
-BUCKET_NAME=$(cat /u01/aidify/props/bucket_name.txt)
-BUCKET_REGION=$(cat /u01/aidify/props/bucket_region.txt)
-OCI_ACCESS_KEY=$(cat /u01/aidify/props/oci_access_key.txt)
-OCI_SECRET_KEY=$(cat /u01/aidify/props/oci_secret_key.txt)
+ORACLE_PASSWORD=$(cat /u01/aipoc/props/db_password.txt)
+ORACLE_DSN=$(cat /u01/aipoc/props/adb_dsn.txt)
+ORACLE_WALLET_PASSWORD=$(cat /u01/aipoc/props/wallet_password.txt)
+BUCKET_NAMESPACE=$(cat /u01/aipoc/props/bucket_namespace.txt)
+BUCKET_NAME=$(cat /u01/aipoc/props/bucket_name.txt)
+BUCKET_REGION=$(cat /u01/aipoc/props/bucket_region.txt)
+OCI_ACCESS_KEY=$(cat /u01/aipoc/props/oci_access_key.txt)
+OCI_SECRET_KEY=$(cat /u01/aipoc/props/oci_secret_key.txt)
 
 log "OCI configuration reading completed"
 
@@ -481,11 +481,11 @@ execute_container_operation() {
 
 # Configure wallet files to containers
 log "Configuring wallet files to Dify containers..."
-sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aidify/props/wallet"|g' /u01/aidify/props/wallet/sqlnet.ora
+sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aipoc/props/wallet"|g' /u01/aipoc/props/wallet/sqlnet.ora
 
 # Copy wallet to Dify containers with retry
 log "Copying wallet to Dify containers..."
-execute_container_operation "dify-worker-1" "wallet copy" "docker cp /u01/aidify/props/wallet dify-worker-1:/app/api/storage/wallet" || exit 1
+execute_container_operation "dify-worker-1" "wallet copy" "docker cp /u01/aipoc/props/wallet dify-worker-1:/app/api/storage/wallet" || exit 1
 
 # Fix NLTK download issues with retry
 log "Fixing NLTK download issues..."
@@ -529,7 +529,7 @@ done
 
 # Application setup
 log "Returning to source directory..."
-cd /u01/aidify/No.1-ADB-SelectAI-Sidecar
+cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 sed -i "s|localhost:3100|$EXTERNAL_IP:3100|g" ./langfuse/docker-compose.yml
 chmod +x ./langfuse/main.sh
 nohup ./langfuse/main.sh &

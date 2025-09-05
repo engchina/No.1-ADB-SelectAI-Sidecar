@@ -2,64 +2,64 @@
 output: {all: '| tee -a /var/log/cloud-init-custom.log'}
 bootcmd:
   - echo "Starting boot command..."
-  - mkdir -p /u01/aidify/props
+  - mkdir -p /u01/aipoc/props
 packages:
   - git
   - unzip
   - curl
   - ca-certificates
 write_files:
-  - path: "/u01/aidify/props/bucket_name.txt"
+  - path: "/u01/aipoc/props/bucket_name.txt"
     permissions: "0644"
     content: |
       ${bucket_name}
-  - path: "/u01/aidify/props/bucket_namespace.txt"
+  - path: "/u01/aipoc/props/bucket_namespace.txt"
     permissions: "0644"
     content: |
       ${bucket_namespace}
-  - path: "/u01/aidify/props/bucket_region.txt"
+  - path: "/u01/aipoc/props/bucket_region.txt"
     permissions: "0644"
     content: |
       ${bucket_region}
-  - path: "/u01/aidify/props/oci_access_key.txt"
+  - path: "/u01/aipoc/props/oci_access_key.txt"
     permissions: "0644"
     content: |
       ${oci_access_key}
-  - path: "/u01/aidify/props/oci_secret_key.txt"
+  - path: "/u01/aipoc/props/oci_secret_key.txt"
     permissions: "0644"
     content: |
       ${oci_secret_key}
-  - path: "/u01/aidify/props/wallet.zip"
+  - path: "/u01/aipoc/props/wallet.zip"
     permissions: "0644"
     encoding: base64
     content: |
       ${oci_database_autonomous_database_wallet_content}
-  - path: "/u01/aidify/props/db_password.txt"
+  - path: "/u01/aipoc/props/db_password.txt"
     permissions: "0644"
     content: ${oci_database_autonomous_database_password}
-  - path: "/u01/aidify/props/adb_dsn.txt"
+  - path: "/u01/aipoc/props/adb_dsn.txt"
     permissions: "0644"
     content: ${oci_database_autonomous_database_dsn}
-  - path: "/u01/aidify/props/wallet_password.txt"
+  - path: "/u01/aipoc/props/wallet_password.txt"
     permissions: "0644"
     content: ${oci_database_autonomous_database_password}
-  - path: "/u01/aidify/props/dify_branch.txt"
+  - path: "/u01/aipoc/props/dify_branch.txt"
     permissions: "0644"
     content: |
       ${dify_branch}
-  - path: "/u01/aidify/props/mysql_hostname.txt"
+  - path: "/u01/aipoc/props/mysql_hostname.txt"
     permissions: "0644"
     content: |
       ${mysql_hostname}
-  - path: "/u01/aidify/props/mysql_password.txt"
+  - path: "/u01/aipoc/props/mysql_password.txt"
     permissions: "0644"
     content: |
       ${mysql_password}
-  - path: "/u01/aidify/props/postgresql_hostname.txt"
+  - path: "/u01/aipoc/props/postgresql_hostname.txt"
     permissions: "0644"
     content: |
       ${postgresql_hostname}
-  - path: "/u01/aidify/props/postgresql_password.txt"
+  - path: "/u01/aipoc/props/postgresql_password.txt"
     permissions: "0644"
     content: |
       ${postgresql_password}
@@ -70,6 +70,6 @@ runcmd:
   - iptables -I INPUT 8 -m state --state NEW -p tcp --dport 3100 -j ACCEPT
   - netfilter-persistent save
   - echo "Downloading and running init script..."
-  - cd /u01/aidify
+  - cd /u01/aipoc
   - git clone -b main https://github.com/engchina/No.1-ADB-SelectAI-Sidecar.git; cd No.1-ADB-SelectAI-Sidecar
   - nohup bash init_script.sh >> /var/log/cloud-init-custom.log 2>&1 &

@@ -142,7 +142,7 @@ variables:
     required: true
     visible: true
     title: "Public Subnet"
-    description: "Select existing public subnet for compute instances"
+    description: "Select existing public subnet for compute instance"
     dependsOn:
       compartmentId: ${compartment_ocid}
       vcnId: ${vcn_ai_vcn_id}
