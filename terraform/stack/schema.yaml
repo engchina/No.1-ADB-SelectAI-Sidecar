@@ -327,9 +327,19 @@ outputs:
     displayText: "Full Oracle Connection Descriptor (HIGH with MUTUAL TLS)"
     type: copyableString
     visible: true
+  adb_connection_string_for_dify:
+    title: "ADB Connection String for Dify"
+    displayText: "ADB Connection String for Dify"
+    type: copyableString
+    visible: true
   mysql_internal_fqdn:
     title: "MySQL Internal FQDN"
     displayText: "MySQL Internal FQDN"
+    type: copyableString
+    visible: true
+  mysql_internal_connection_string_for_dify:
+    title: "MySQL Internal Connection String for Dify"
+    displayText: "MySQL Internal Connection String for Dify"
     type: copyableString
     visible: true
   postgresql_primary_endpoint_fqdn:
@@ -337,6 +347,11 @@ outputs:
     displayText: "PostgreSQL Primary Endpoint FQDN"
     type: copyableString
     visible: true
+  postgresql_primary_connection_string_for_dify:
+    title: "PostgreSQL Primary Connection String for Dify"
+    displayText: "PostgreSQL Primary Connection String for Dify"
+    type: copyableString
+    visible: true    
   ssh_to_instance:
     title: "Convenient command to ssh to the instance"
     displayText: "Convenient command to ssh to the instance"

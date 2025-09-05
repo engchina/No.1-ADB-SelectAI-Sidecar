@@ -21,6 +21,16 @@ output "db_password" {
     value = var.db_password
 }
 
+output "adb_dsn" {
+  description = "ADB DSN for connection"
+  value       = "${lower(var.adb_name)}_high"
+}
+
+output "wallet_file_location" {
+  description = "Location of the wallet file"
+  value       = "${path.module}/wallet.zip"
+}
+
 output "adb_connection_string" {
   value = lookup(
     oci_database_autonomous_database.generated_database_autonomous_database.connection_strings[0].all_connection_strings,
@@ -39,14 +49,14 @@ output "adb_connection_string_full" {
   )
 }
 
-output "adb_dsn" {
-  description = "ADB DSN for connection"
-  value       = "${lower(var.adb_name)}_high"
-}
-
-output "wallet_file_location" {
-  description = "Location of the wallet file"
-  value       = "${path.module}/wallet.zip"
+output "adb_connection_string_for_dify" {
+  description = "Full Oracle connection descriptor for dify"
+  value = try(
+    "oracle+oracledb://admin:${var.db_password}@${[for profile in oci_database_autonomous_database.generated_database_autonomous_database.connection_strings[0].profiles :
+      profile.value if profile.consumer_group == "HIGH" && profile.tls_authentication == "MUTUAL"
+    ][0]}",
+    "unavailable"
+  )
 }
 
 output "mysql_internal_fqdn" {
@@ -54,9 +64,19 @@ output "mysql_internal_fqdn" {
   value       = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com"
 }
 
+output "mysql_internal_connection_string_for_dify" {
+  description = "MySQL Internal connection string for dify"
+  value       = "mysql+pymysql://admin:${var.db_password}@${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com:3306"
+}
+
 output "postgresql_primary_endpoint_fqdn" {
   description = "PostgreSQL Primary endpoint FQDN"
   value       = "primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com"
+}
+
+output "postgresql_primary_connection_string_for_dify" {
+  description = "PostgreSQL Primary connection string for dify"
+  value       = "postgresql+psycopg2://admin:${var.db_password}@primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com:5432/postgres"
 }
 
 output "ssh_to_instance" {
