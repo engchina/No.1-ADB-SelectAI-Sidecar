@@ -34,8 +34,10 @@ variableGroups:
       - adb_name
       - db_password
       - license_model
+      - enable_mysql      
       - mysql_display_name
       - db_system_display_name
+      - enable_postgresql
       - instance_display_name
       - vcn_ai_vcn_id
       - subnet_private_id
@@ -94,6 +96,14 @@ variables:
     description: "Display name for MySQL database system (also used as hostname label)"
     default: "mysql4adbaisidecar"
 
+  enable_mysql:
+    type: boolean
+    required: true
+    visible: true
+    title: "Enable MySQL Database"
+    description: "Enable MySQL database installation and configuration"
+    default: true
+
   db_system_display_name:
     type: string
     required: true
@@ -101,6 +111,14 @@ variables:
     title: "PostgreSQL Database Display Name"
     description: "Display name for PostgreSQL database system"
     default: "postgresql4adbaisidecar"
+
+  enable_postgresql:
+    type: boolean
+    required: true
+    visible: true
+    title: "Enable PostgreSQL Database"
+    description: "Enable PostgreSQL database installation and configuration"
+    default: true
 
   db_password:
     type: password
@@ -230,7 +248,7 @@ variables:
     visible: true
     title: "Dify Branch/Tag"
     description: "Branch or tag name to use when cloning the Dify repository"
-    default: "1.8.0"
+    default: "1.8.1"
 
   db_system_credentials_password_details_password_type:
     type: string

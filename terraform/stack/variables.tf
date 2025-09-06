@@ -79,7 +79,7 @@ variable "oci_secret_key" {
 }
 
 variable "dify_branch" {
-  default = "1.8.0"
+  default = "1.8.1"
 }
 
 variable "mysql_display_name" {
@@ -138,4 +138,16 @@ variable "db_system_instance_ocpu_count" {
   description = "OCPU count"
   type = number
   default = 2
+}
+
+variable "enable_mysql" {
+  description = "Enable MySQL database installation"
+  type = bool
+  default = true
+}
+
+variable "enable_postgresql" {
+  description = "Enable PostgreSQL database installation"
+  type = bool
+  default = true
 }

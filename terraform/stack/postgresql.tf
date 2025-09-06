@@ -1,4 +1,5 @@
 resource "oci_psql_db_system" "psql_db_system" {
+    count = var.enable_postgresql ? 1 : 0
     compartment_id = var.compartment_ocid
     db_version = var.db_system_db_version
     display_name = var.db_system_display_name

@@ -26,6 +26,21 @@ trap 'handle_error $LINENO $?' ERR
 
 log "Starting application setup initialization..."
 
+# Read configuration flags
+ENABLE_MYSQL="true"
+ENABLE_POSTGRESQL="true"
+
+if [ -f "/u01/aipoc/props/enable_mysql.txt" ]; then
+    ENABLE_MYSQL=$(cat /u01/aipoc/props/enable_mysql.txt)
+fi
+
+if [ -f "/u01/aipoc/props/enable_postgresql.txt" ]; then
+    ENABLE_POSTGRESQL=$(cat /u01/aipoc/props/enable_postgresql.txt)
+fi
+
+log "MySQL installation enabled: $ENABLE_MYSQL"
+log "PostgreSQL installation enabled: $ENABLE_POSTGRESQL"
+
 # Download function with retry mechanism
 download_with_retry() {
     local url="$1"
@@ -63,13 +78,14 @@ verify_file() {
 log "Switching to source directory..."
 cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
-# Connect to MySQL and create database
-log "Connecting to MySQL and creating database..."
+# Connect to MySQL and create database (if enabled)
+if [ "$ENABLE_MYSQL" = "true" ]; then
+    log "Connecting to MySQL and creating database..."
 
-# Read MySQL connection information
-cd /u01/aipoc/props
-verify_file "mysql_hostname.txt"
-verify_file "mysql_password.txt"
+    # Read MySQL connection information
+    cd /u01/aipoc/props
+    verify_file "mysql_hostname.txt"
+    verify_file "mysql_password.txt"
 
 MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
 MYSQL_PASSWORD=$(cat mysql_password.txt)
@@ -118,6 +134,9 @@ COLLATE utf8mb4_unicode_ci;
 }
 
 log "Database myapp created successfully"
+else
+    log "MySQL installation disabled, skipping MySQL setup"
+fi
 
 # Download and configure Oracle Instant Client
 log "Setting up Oracle Instant Client..."
@@ -215,50 +234,82 @@ else
     exit 1
 fi
 
-log "Creating MySQL and PostgreSQL credentials and database links..."
+log "Creating database credentials and database links..."
 
-# Get MySQL and PostgreSQL connection info from files
+# Get database connection info from files
 cd /u01/aipoc/props
-verify_file "mysql_hostname.txt"
-verify_file "mysql_password.txt"
-verify_file "postgresql_hostname.txt"
-verify_file "postgresql_password.txt"
 
-MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
-MYSQL_PASSWORD=$(cat mysql_password.txt)
-POSTGRESQL_HOSTNAME=$(cat postgresql_hostname.txt)
-POSTGRESQL_PASSWORD=$(cat postgresql_password.txt)
+# Initialize variables
+MYSQL_HOSTNAME=""
+MYSQL_PASSWORD=""
+POSTGRESQL_HOSTNAME=""
+POSTGRESQL_PASSWORD=""
+
+# Read MySQL connection info if enabled
+if [ "$ENABLE_MYSQL" = "true" ]; then
+    verify_file "mysql_hostname.txt"
+    verify_file "mysql_password.txt"
+    MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
+    MYSQL_PASSWORD=$(cat mysql_password.txt)
+fi
+
+# Read PostgreSQL connection info if enabled
+if [ "$ENABLE_POSTGRESQL" = "true" ]; then
+    verify_file "postgresql_hostname.txt"
+    verify_file "postgresql_password.txt"
+    POSTGRESQL_HOSTNAME=$(cat postgresql_hostname.txt)
+    POSTGRESQL_PASSWORD=$(cat postgresql_password.txt)
+fi
 
 # Return to script directory
 cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
-if [ -z "$MYSQL_HOSTNAME" ] || [ -z "$POSTGRESQL_HOSTNAME" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$POSTGRESQL_PASSWORD" ]; then
-    log_error "Failed to get database connection information from files"
+# Validate connection information for enabled databases
+if [ "$ENABLE_MYSQL" = "true" ] && ([ -z "$MYSQL_HOSTNAME" ] || [ -z "$MYSQL_PASSWORD" ]); then
+    log_error "Failed to get MySQL connection information from files"
     exit 1
 fi
 
-log "MySQL Hostname: $MYSQL_HOSTNAME"
-log "PostgreSQL Hostname: $POSTGRESQL_HOSTNAME"
+if [ "$ENABLE_POSTGRESQL" = "true" ] && ([ -z "$POSTGRESQL_HOSTNAME" ] || [ -z "$POSTGRESQL_PASSWORD" ]); then
+    log_error "Failed to get PostgreSQL connection information from files"
+    exit 1
+fi
 
-# Create MySQL credential and database link
-log "Creating MySQL credential and database link..."
+if [ "$ENABLE_MYSQL" = "true" ]; then
+    log "MySQL Hostname: $MYSQL_HOSTNAME"
+fi
+
+if [ "$ENABLE_POSTGRESQL" = "true" ]; then
+    log "PostgreSQL Hostname: $POSTGRESQL_HOSTNAME"
+fi
+
+# Create MySQL credential and database link (if enabled)
+if [ "$ENABLE_MYSQL" = "true" ]; then
+    log "Creating MySQL credential and database link..."
 if echo -e "BEGIN\n    DBMS_CLOUD.CREATE_CREDENTIAL(\n        credential_name => 'MYSQL_CRED',\n        username        => 'admin',\n        password        => '${MYSQL_PASSWORD}'\n    );\nEND;\n/\n\nBEGIN\n    DBMS_CLOUD_ADMIN.CREATE_DATABASE_LINK(\n        db_link_name       => 'MYSQL_LINK',\n        hostname           => '${MYSQL_HOSTNAME}',\n        port               => '3306',\n        service_name       => 'myapp',\n        ssl_server_cert_dn => NULL,\n        credential_name    => 'MYSQL_CRED',\n        private_target     => TRUE,\n        gateway_params     => JSON_OBJECT(\n            'db_type' VALUE 'mysql'\n        )\n    );\nEND;\n/\nexit;" | sqlplus -S ADMIN/${ADB_PASSWORD}@${ADB_DSN}; then
     log "MySQL credential and database link created successfully"
 else
     log_error "Failed to create MySQL credential and database link"
     exit 1
 fi
+else
+    log "MySQL installation disabled, skipping MySQL credential and database link creation"
+fi
 
-# Create PostgreSQL credential and database link
-log "Creating PostgreSQL credential and database link..."
+# Create PostgreSQL credential and database link (if enabled)
+if [ "$ENABLE_POSTGRESQL" = "true" ]; then
+    log "Creating PostgreSQL credential and database link..."
 if echo -e "BEGIN\n    DBMS_CLOUD.CREATE_CREDENTIAL(\n        credential_name => 'POSTGRES_CRED',\n        username        => 'admin',\n        password        => '${POSTGRESQL_PASSWORD}'\n    );\nEND;\n/\n\nBEGIN\n    DBMS_CLOUD_ADMIN.CREATE_DATABASE_LINK(\n        db_link_name       => 'POSTGRES_LINK',\n        hostname           => '${POSTGRESQL_HOSTNAME}',\n        port               => '5432',\n        service_name       => 'postgres',\n        ssl_server_cert_dn => NULL,\n        credential_name    => 'POSTGRES_CRED',\n        private_target     => TRUE,\n        gateway_params     => JSON_OBJECT(\n            'db_type'    VALUE 'postgres',\n            'enable_ssl' VALUE true\n        )\n    );\nEND;\n/\nexit;" | sqlplus -S ADMIN/${ADB_PASSWORD}@${ADB_DSN}; then
     log "PostgreSQL credential and database link created successfully"
 else
     log_error "Failed to create PostgreSQL credential and database link"
     exit 1
 fi
+else
+    log "PostgreSQL installation disabled, skipping PostgreSQL credential and database link creation"
+fi
 
-log "All database credentials and links created successfully"
+log "Database credentials and links setup completed"
 
 # Return to source directory
 log "Returning to source directory..."

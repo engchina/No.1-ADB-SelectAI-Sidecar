@@ -1,4 +1,5 @@
 resource "oci_mysql_mysql_db_system" "mysql_db_system" {
+	count = var.enable_mysql ? 1 : 0
 	access_mode = "UNRESTRICTED"
 	admin_password = var.db_password
 	admin_username = "admin"

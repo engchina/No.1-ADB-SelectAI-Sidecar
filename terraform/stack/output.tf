@@ -61,22 +61,22 @@ output "adb_connection_string_for_dify" {
 
 output "mysql_internal_fqdn" {
   description = "MySQL Internal FQDN"
-  value       = local.mysql_internal_fqdn
+  value       = var.enable_mysql ? local.mysql_internal_fqdn : null
 }
 
 output "mysql_internal_connection_string_for_dify" {
   description = "MySQL Internal connection string for dify"
-  value       = "mysql+pymysql://admin:${var.db_password}@${local.mysql_internal_fqdn}:3306/myapp"
+  value       = var.enable_mysql ? "mysql+pymysql://admin:${var.db_password}@${local.mysql_internal_fqdn}:3306/myapp" : null
 }
 
 output "postgresql_primary_endpoint_fqdn" {
   description = "PostgreSQL Primary endpoint FQDN"
-  value       = local.postgresql_primary_endpoint_fqdn
+  value       = var.enable_postgresql ? local.postgresql_primary_endpoint_fqdn : null
 }
 
 output "postgresql_internal_connection_string_for_dify" {
   description = "PostgreSQL Internal connection string for dify"
-  value       = "postgresql+psycopg2://admin:${var.db_password}@${oci_psql_db_system.psql_db_system.network_details[0].primary_db_endpoint_private_ip}:5432/postgres"
+  value       = var.enable_postgresql ? "postgresql+psycopg2://admin:${var.db_password}@${oci_psql_db_system.psql_db_system[0].network_details[0].primary_db_endpoint_private_ip}:5432/postgres" : null
 }
 
 output "ssh_to_instance" {
