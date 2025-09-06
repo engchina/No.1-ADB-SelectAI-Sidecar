@@ -5,4 +5,4 @@ Deploy Oracle Autonomous Database (ADB) Select AI Sidecar and Dify on Oracle Clo
 ## Deploy
 
 
-  [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?region=ap-osaka-1&zipUrl=https://github.com/engchina/No.1-ADB-SelectAI-Sidecar/releases/download/v1.8.0/v1.8.0.zip)
+  [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?region=ap-osaka-1&zipUrl=https://github.com/engchina/No.1-ADB-SelectAI-Sidecar/releases/download/v1.8.1/v1.8.1.zip)
