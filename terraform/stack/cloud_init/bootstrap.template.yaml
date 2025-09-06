@@ -43,6 +43,14 @@ write_files:
     permissions: "0644"
     content: |
       ${dify_branch}
+  - path: "/u01/aipoc/props/enable_mysql.txt"
+    permissions: "0644"
+    content: |
+      ${enable_mysql}
+  - path: "/u01/aipoc/props/enable_postgresql.txt"
+    permissions: "0644"
+    content: |
+      ${enable_postgresql}
   - path: "/u01/aipoc/props/mysql_hostname.txt"
     permissions: "0644"
     content: |

@@ -18,6 +18,8 @@ data "template_file" "cloud_init_file" {
     oci_access_key = var.oci_access_key
     oci_secret_key = var.oci_secret_key
     dify_branch = var.dify_branch
+    enable_mysql = var.enable_mysql
+    enable_postgresql = var.enable_postgresql
     mysql_hostname = local.mysql_internal_fqdn
     mysql_password = var.db_password
     postgresql_hostname = local.postgresql_primary_endpoint_fqdn

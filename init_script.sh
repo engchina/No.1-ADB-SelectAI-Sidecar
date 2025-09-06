@@ -27,8 +27,8 @@ trap 'handle_error $LINENO $?' ERR
 log "Starting application setup initialization..."
 
 # Read configuration flags
-ENABLE_MYSQL="true"
-ENABLE_POSTGRESQL="true"
+ENABLE_MYSQL="false"
+ENABLE_POSTGRESQL="false"
 
 if [ -f "/u01/aipoc/props/enable_mysql.txt" ]; then
     ENABLE_MYSQL=$(cat /u01/aipoc/props/enable_mysql.txt)
