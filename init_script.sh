@@ -84,56 +84,59 @@ if [ "$ENABLE_MYSQL" = "true" ]; then
 
     # Read MySQL connection information
     cd /u01/aipoc/props
-    verify_file "mysql_hostname.txt"
-    verify_file "mysql_password.txt"
-
-MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
-MYSQL_PASSWORD=$(cat mysql_password.txt)
-
-log "MySQL hostname: $MYSQL_HOSTNAME"
-
-# Return to source directory
-cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
-
-# Install MySQL client
-log "Installing MySQL client..."
-sudo apt-get update
-sudo apt-get install -y mysql-client
-
-# Wait for MySQL service to be ready
-max_mysql_attempts=30
-mysql_wait_time=10
-
-for attempt in $(seq 1 $max_mysql_attempts); do
-    log "Attempting to connect to MySQL (attempt $attempt/$max_mysql_attempts)..."
-    
-    # Try to connect to MySQL
-    if mysql -h "$MYSQL_HOSTNAME" -P 3306 -u admin -p"$MYSQL_PASSWORD" -e "SELECT 1;" >/dev/null 2>&1; then
-        log "MySQL connection successful"
-        break
-    fi
-    
-    if [ $attempt -lt $max_mysql_attempts ]; then
-        log "MySQL not ready yet, waiting ${mysql_wait_time}s before retry..."
-        sleep $mysql_wait_time
+    if [ -f "mysql_hostname.txt" ] && [ -f "mysql_password.txt" ]; then
+        verify_file "mysql_hostname.txt"
+        verify_file "mysql_password.txt"
+        MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
+        MYSQL_PASSWORD=$(cat mysql_password.txt)
+        log "MySQL hostname: $MYSQL_HOSTNAME"
     else
-        log_error "Failed to connect to MySQL after $max_mysql_attempts attempts"
+        log_error "MySQL is enabled but required configuration files (mysql_hostname.txt, mysql_password.txt) are missing"
         exit 1
     fi
-done
 
-# Create database
-log "Creating myapp database..."
-mysql -h "$MYSQL_HOSTNAME" -P 3306 -u admin -p"$MYSQL_PASSWORD" -e "
-CREATE DATABASE IF NOT EXISTS myapp
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-" || {
-    log_error "Failed to create database"
-    exit 1
-}
+    # Return to source directory
+    cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 
-log "Database myapp created successfully"
+    # Install MySQL client
+     log "Installing MySQL client..."
+     sudo apt-get update
+     sudo apt-get install -y mysql-client
+
+     # Wait for MySQL service to be ready
+     max_mysql_attempts=30
+     mysql_wait_time=10
+
+     for attempt in $(seq 1 $max_mysql_attempts); do
+         log "Attempting to connect to MySQL (attempt $attempt/$max_mysql_attempts)..."
+         
+         # Try to connect to MySQL
+         if mysql -h "$MYSQL_HOSTNAME" -P 3306 -u admin -p"$MYSQL_PASSWORD" -e "SELECT 1;" >/dev/null 2>&1; then
+             log "MySQL connection successful"
+             break
+         fi
+         
+         if [ $attempt -lt $max_mysql_attempts ]; then
+             log "MySQL not ready yet, waiting ${mysql_wait_time}s before retry..."
+             sleep $mysql_wait_time
+         else
+             log_error "Failed to connect to MySQL after $max_mysql_attempts attempts"
+             exit 1
+         fi
+     done
+
+     # Create database
+     log "Creating myapp database..."
+     mysql -h "$MYSQL_HOSTNAME" -P 3306 -u admin -p"$MYSQL_PASSWORD" -e "
+     CREATE DATABASE IF NOT EXISTS myapp
+     CHARACTER SET utf8mb4
+     COLLATE utf8mb4_unicode_ci;
+     " || {
+         log_error "Failed to create database"
+         exit 1
+     }
+
+     log "Database myapp created successfully"
 else
     log "MySQL installation disabled, skipping MySQL setup"
 fi
@@ -247,18 +250,28 @@ POSTGRESQL_PASSWORD=""
 
 # Read MySQL connection info if enabled
 if [ "$ENABLE_MYSQL" = "true" ]; then
-    verify_file "mysql_hostname.txt"
-    verify_file "mysql_password.txt"
-    MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
-    MYSQL_PASSWORD=$(cat mysql_password.txt)
+    if [ -f "mysql_hostname.txt" ] && [ -f "mysql_password.txt" ]; then
+        verify_file "mysql_hostname.txt"
+        verify_file "mysql_password.txt"
+        MYSQL_HOSTNAME=$(cat mysql_hostname.txt)
+        MYSQL_PASSWORD=$(cat mysql_password.txt)
+    else
+        log_error "MySQL is enabled but required configuration files (mysql_hostname.txt, mysql_password.txt) are missing"
+        exit 1
+    fi
 fi
 
 # Read PostgreSQL connection info if enabled
 if [ "$ENABLE_POSTGRESQL" = "true" ]; then
-    verify_file "postgresql_hostname.txt"
-    verify_file "postgresql_password.txt"
-    POSTGRESQL_HOSTNAME=$(cat postgresql_hostname.txt)
-    POSTGRESQL_PASSWORD=$(cat postgresql_password.txt)
+    if [ -f "postgresql_hostname.txt" ] && [ -f "postgresql_password.txt" ]; then
+        verify_file "postgresql_hostname.txt"
+        verify_file "postgresql_password.txt"
+        POSTGRESQL_HOSTNAME=$(cat postgresql_hostname.txt)
+        POSTGRESQL_PASSWORD=$(cat postgresql_password.txt)
+    else
+        log_error "PostgreSQL is enabled but required configuration files (postgresql_hostname.txt, postgresql_password.txt) are missing"
+        exit 1
+    fi
 fi
 
 # Return to script directory

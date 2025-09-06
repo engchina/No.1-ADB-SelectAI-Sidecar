@@ -1,6 +1,6 @@
 locals {
-  mysql_internal_fqdn = "${oci_mysql_mysql_db_system.mysql_db_system.hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com"
-  postgresql_primary_endpoint_fqdn = "primary.${substr(oci_psql_db_system.psql_db_system.id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com"
+  mysql_internal_fqdn = var.enable_mysql ? "${oci_mysql_mysql_db_system.mysql_db_system[0].hostname_label}.${data.oci_core_subnet.private_subnet.dns_label}.${data.oci_core_vcn.vcn.dns_label}.oraclevcn.com" : ""
+  postgresql_primary_endpoint_fqdn = var.enable_postgresql ? "primary.${substr(oci_psql_db_system.psql_db_system[0].id, -30, 30)}.postgresql.${lower(substr(var.availability_domain, 5, length(var.availability_domain) - 10))}.oci.oraclecloud.com" : ""
 }
 
 data "template_file" "cloud_init_file" {
