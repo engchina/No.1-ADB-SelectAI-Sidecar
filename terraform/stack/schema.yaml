@@ -32,12 +32,12 @@ variableGroups:
       - compartment_ocid
       - availability_domain
       - adb_name
-      - db_password
       - license_model
       - enable_mysql      
       - mysql_display_name
-      - db_system_display_name
       - enable_postgresql
+      - db_system_display_name
+      - db_password
       - instance_display_name
       - vcn_ai_vcn_id
       - subnet_private_id
@@ -91,7 +91,7 @@ variables:
   mysql_display_name:
     type: string
     required: true
-    visible: true
+    visible: ${enable_mysql}
     title: "MySQL Database Display Name"
     description: "Display name for MySQL database system (also used as hostname label)"
     default: "mysql4adbaisidecar"
@@ -104,14 +104,6 @@ variables:
     description: "Enable MySQL database installation and configuration"
     default: true
 
-  db_system_display_name:
-    type: string
-    required: true
-    visible: true
-    title: "PostgreSQL Database Display Name"
-    description: "Display name for PostgreSQL database system"
-    default: "postgresql4adbaisidecar"
-
   enable_postgresql:
     type: boolean
     required: true
@@ -119,6 +111,14 @@ variables:
     title: "Enable PostgreSQL Database"
     description: "Enable PostgreSQL database installation and configuration"
     default: true
+
+  db_system_display_name:
+    type: string
+    required: true
+    visible: ${enable_postgresql}
+    title: "PostgreSQL Database Display Name"
+    description: "Display name for PostgreSQL database system"
+    default: "postgresql4adbaisidecar"
 
   db_password:
     type: password
