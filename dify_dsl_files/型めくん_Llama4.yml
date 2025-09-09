@@ -1,0 +1,3849 @@
+app:
+  description: 非構造化データを構造化データへ変換
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 型めくん_Llama4
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: hjlarry/database:0.0.6@534bc26cf5bc4ff6b5557457452287ccc71f00eef9378784c4f43ca49954ca2f
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/oci:0.0.7@c8923741e141ef3622182b016fdf6a9fa5cb0fda2dacd9c61d1f5ae3f9bf9fd9
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables:
+  - description: ''
+    id: b05ca3c0-5311-4724-a084-f41f06ad5cfb
+    name: query_type_1_status
+    selector:
+    - conversation
+    - query_type_1_status
+    value: ''
+    value_type: string
+  - description: ''
+    id: 3474f58f-853f-4b72-bdcc-011d178c1e72
+    name: query_type_2_status
+    selector:
+    - conversation
+    - query_type_2_status
+    value: ''
+    value_type: string
+  - description: ''
+    id: 037783b9-df9c-486b-9e36-059ad5843af3
+    name: cached_table_name
+    selector:
+    - conversation
+    - cached_table_name
+    value: ''
+    value_type: string
+  - description: ''
+    id: cd815c00-d54c-4a3c-9577-6f22ddedb68c
+    name: tables_markdown_text
+    selector:
+    - conversation
+    - tables_markdown_text
+    value: ''
+    value_type: string
+  - description: ''
+    id: f1dc6186-116b-439e-b00b-a6fc9289fc9c
+    name: query_type_3_status
+    selector:
+    - conversation
+    - query_type_3_status
+    value: ''
+    value_type: string
+  - description: ''
+    id: d4274e6e-d660-4bf6-aca6-df43e5446b3d
+    name: cached_sql
+    selector:
+    - conversation
+    - cached_sql
+    value: ''
+    value_type: string
+  - description: ''
+    id: c950ce07-4cf9-442e-9da2-96d73e80d194
+    name: query_type
+    selector:
+    - conversation
+    - query_type
+    value: ''
+    value_type: string
+  environment_variables:
+  - description: ''
+    id: 571e08b9-adb3-418d-8f9c-485cc85f4bdc
+    name: get_user_tables_sql
+    selector:
+    - env
+    - get_user_tables_sql
+    value: "SELECT ROWNUM AS row_id, table_name\nFROM (\n    SELECT table_name\n \
+      \   FROM user_tables\n    WHERE table_name NOT LIKE 'DR$%'\n    ORDER BY table_name\n\
+      )"
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 1
+    opening_statement: '実行したい処理の番号をご入力ください。
+
+
+      - 1: SQLを実行する
+
+      - 2: CREATE TABLE文を生成する
+
+      - 3: INSERT文を生成する'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: 1752719068431-source-1752719187495-target
+      selected: false
+      source: '1752719068431'
+      sourceHandle: source
+      target: '1752719187495'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 1752725177971-false-17527260165540-target
+      selected: false
+      source: '1752725177971'
+      sourceHandle: 'false'
+      target: '17527260165540'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1752719187495-source-1752725177971-target
+      selected: false
+      source: '1752719187495'
+      sourceHandle: source
+      target: '1752725177971'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1752725177971-true-1752725440517-target
+      selected: false
+      source: '1752725177971'
+      sourceHandle: 'true'
+      target: '1752725440517'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1752726046622-source-1752726401052-target
+      selected: false
+      source: '1752726046622'
+      sourceHandle: source
+      target: '1752726401052'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: assigner
+      id: 1752726401052-source-1752726512118-target
+      selected: false
+      source: '1752726401052'
+      sourceHandle: source
+      target: '1752726512118'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 1752728319950-source-1752728287896-target
+      selected: false
+      source: '1752728319950'
+      sourceHandle: source
+      target: '1752728287896'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527285749740-source-answer-target
+      selected: false
+      source: '17527285749740'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527286876990-source-17527287027970-target
+      selected: false
+      source: '17527286876990'
+      sourceHandle: source
+      target: '17527287027970'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 1752728963461-true-1752728319950-target
+      selected: false
+      source: '1752728963461'
+      sourceHandle: 'true'
+      target: '1752728319950'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1752725177971-0d4d78c9-612a-4c97-b6f7-095831dae7e2-17527285749740-target
+      selected: false
+      source: '1752725177971'
+      sourceHandle: 0d4d78c9-612a-4c97-b6f7-095831dae7e2
+      target: '17527285749740'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1752725177971-6c96e2fd-199d-4758-b477-2280ec5b1875-17527286876990-target
+      selected: false
+      source: '1752725177971'
+      sourceHandle: 6c96e2fd-199d-4758-b477-2280ec5b1875
+      target: '17527286876990'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1752725177971-ff870cc7-eaf6-4b7b-be87-0ec007708aa5-17527299802801-target
+      selected: false
+      source: '1752725177971'
+      sourceHandle: ff870cc7-eaf6-4b7b-be87-0ec007708aa5
+      target: '17527299802801'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1752730187065-source-1752730267644-target
+      selected: false
+      source: '1752730187065'
+      sourceHandle: source
+      target: '1752730267644'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1752730267644-source-1752730414727-target
+      selected: false
+      source: '1752730267644'
+      sourceHandle: source
+      target: '1752730414727'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1752730791956-source-1752730821159-target
+      selected: false
+      source: '1752730791956'
+      sourceHandle: source
+      target: '1752730821159'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 17527260165540-ff870cc7-eaf6-4b7b-be87-0ec007708aa5-1752732162477-target
+      selected: false
+      source: '17527260165540'
+      sourceHandle: ff870cc7-eaf6-4b7b-be87-0ec007708aa5
+      target: '1752732162477'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: assigner
+      id: 1752730791956-source-1752732615710-target
+      selected: false
+      source: '1752730791956'
+      sourceHandle: source
+      target: '1752732615710'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 17527260165540-false-17527327228490-target
+      selected: false
+      source: '17527260165540'
+      sourceHandle: 'false'
+      target: '17527327228490'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 1752732162477-true-1752732745408-target
+      selected: false
+      source: '1752732162477'
+      sourceHandle: 'true'
+      target: '1752732745408'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1752732745408-source-17527299802800-target
+      selected: false
+      source: '1752732745408'
+      sourceHandle: source
+      target: '17527299802800'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: tool
+      id: 17527299802801-source-1752730791956-target
+      selected: false
+      source: '17527299802801'
+      sourceHandle: source
+      target: '1752730791956'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: assigner
+      id: 1752730791956-source-1752731100310-target
+      selected: false
+      source: '1752730791956'
+      sourceHandle: source
+      target: '1752731100310'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 1752732162477-fd24d881-64c6-4deb-9ce3-82bd0bd808fe-1752730187065-target
+      selected: false
+      source: '1752732162477'
+      sourceHandle: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+      target: '1752730187065'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527340748720-source-1752730483389-target
+      selected: false
+      source: '17527340748720'
+      sourceHandle: source
+      target: '1752730483389'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: assigner
+      id: 1752730414727-source-17527350319640-target
+      selected: false
+      source: '1752730414727'
+      sourceHandle: source
+      target: '17527350319640'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527350319640-source-1752730483389-target
+      selected: false
+      source: '17527350319640'
+      sourceHandle: source
+      target: '1752730483389'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 1752732162477-350fa5a7-0a73-448f-a6eb-a6ee1c2cd578-17527352209850-target
+      selected: false
+      source: '1752732162477'
+      sourceHandle: 350fa5a7-0a73-448f-a6eb-a6ee1c2cd578
+      target: '17527352209850'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 17527352209850-true-17527355363321-target
+      selected: false
+      source: '17527352209850'
+      sourceHandle: 'true'
+      target: '17527355363321'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 17527355363321-source-17527355363320-target
+      selected: false
+      source: '17527355363321'
+      sourceHandle: source
+      target: '17527355363320'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 17527355363320-source-17527355363322-target
+      selected: false
+      source: '17527355363320'
+      sourceHandle: source
+      target: '17527355363322'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 1752726512118-source-1752726179343-target
+      source: '1752726512118'
+      sourceHandle: source
+      target: '1752726179343'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: answer-source-17527399312520-target
+      source: answer
+      sourceHandle: source
+      target: '17527399312520'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 17527260165540-0d4d78c9-612a-4c97-b6f7-095831dae7e2-17527399822610-target
+      source: '17527260165540'
+      sourceHandle: 0d4d78c9-612a-4c97-b6f7-095831dae7e2
+      target: '17527399822610'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 17527399822610-true-1752726046622-target
+      source: '17527399822610'
+      sourceHandle: 'true'
+      target: '1752726046622'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 17527399822610-fd24d881-64c6-4deb-9ce3-82bd0bd808fe-17527401102810-target
+      source: '17527399822610'
+      sourceHandle: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+      target: '17527401102810'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: assigner
+      id: 1752726401052-source-17527401251820-target
+      source: '1752726401052'
+      sourceHandle: source
+      target: '17527401251820'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527401251820-source-1752726179343-target
+      source: '17527401251820'
+      sourceHandle: source
+      target: '1752726179343'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 17527401562560-source-17527401837740-target
+      source: '17527401562560'
+      sourceHandle: source
+      target: '17527401837740'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 17527401837740-source-17527402039420-target
+      source: '17527401837740'
+      sourceHandle: source
+      target: '17527402039420'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527266583930-source-1752734632021-target
+      source: '17527266583930'
+      sourceHandle: source
+      target: '1752734632021'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 1752725440517-source-17527266583930-target
+      source: '1752725440517'
+      sourceHandle: source
+      target: '17527266583930'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527287027970-source-17527407679470-target
+      source: '17527287027970'
+      sourceHandle: source
+      target: '17527407679470'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 17527260165540-6c96e2fd-199d-4758-b477-2280ec5b1875-17527408549440-target
+      source: '17527260165540'
+      sourceHandle: 6c96e2fd-199d-4758-b477-2280ec5b1875
+      target: '17527408549440'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: 17527408549440-fd24d881-64c6-4deb-9ce3-82bd0bd808fe-1752728963461-target
+      source: '17527408549440'
+      sourceHandle: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+      target: '1752728963461'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 17527408549440-true-17527409375450-target
+      source: '17527408549440'
+      sourceHandle: 'true'
+      target: '17527409375450'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527409375450-source-17527409734480-target
+      source: '17527409375450'
+      sourceHandle: source
+      target: '17527409734480'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 17527408549440-true-17527409891370-target
+      source: '17527408549440'
+      sourceHandle: 'true'
+      target: '17527409891370'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17527409891370-source-17527409734480-target
+      source: '17527409891370'
+      sourceHandle: source
+      target: '17527409734480'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1752728287896-source-17527284151750-target
+      source: '1752728287896'
+      sourceHandle: source
+      target: '17527284151750'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527299802800-source-1752733478355-target
+      source: '17527299802800'
+      sourceHandle: source
+      target: '1752733478355'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527299802800-source-17527335146740-target
+      source: '17527299802800'
+      sourceHandle: source
+      target: '17527335146740'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527284151750-source-17528031842810-target
+      source: '17527284151750'
+      sourceHandle: source
+      target: '17528031842810'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527402039420-source-17528031842810-target
+      source: '17527402039420'
+      sourceHandle: source
+      target: '17528031842810'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527355363322-source-17528031842810-target
+      source: '17527355363322'
+      sourceHandle: source
+      target: '17528031842810'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: assigner
+      id: 17527327228490-source-17528031842810-target
+      source: '17527327228490'
+      sourceHandle: source
+      target: '17528031842810'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: answer
+      id: 17528044407780-source-17527411158410-target
+      source: '17528044407780'
+      sourceHandle: source
+      target: '17527411158410'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1752728963461-false-17528044407780-target
+      source: '1752728963461'
+      sourceHandle: 'false'
+      target: '17528044407780'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 17527408549440-false-17528044407780-target
+      source: '17527408549440'
+      sourceHandle: 'false'
+      target: '17528044407780'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 17527401102810-true-1752726046622-target
+      source: '17527401102810'
+      sourceHandle: 'true'
+      target: '1752726046622'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 17527401102810-false-17527401562560-target
+      source: '17527401102810'
+      sourceHandle: 'false'
+      target: '17527401562560'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 17527399822610-false-1752726046622-target
+      source: '17527399822610'
+      sourceHandle: 'false'
+      target: '1752726046622'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 1752732162477-false-1752730187065-target
+      source: '1752732162477'
+      sourceHandle: 'false'
+      target: '1752730187065'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 17527352209850-false-1752730187065-target
+      source: '17527352209850'
+      sourceHandle: 'false'
+      target: '1752730187065'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: assigner
+      id: 17537600882880-source-17527340748720-target
+      source: '17537600882880'
+      sourceHandle: source
+      target: '17527340748720'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1752730414727-source-17537600882880-target
+      source: '1752730414727'
+      sourceHandle: source
+      target: '17537600882880'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: スタート
+        type: start
+        variables: []
+      height: 51
+      id: '1752719068431'
+      position:
+        x: 2.648325343253447
+        y: 551.6428571428572
+      positionAbsolute:
+        x: 2.648325343253447
+        y: 551.6428571428572
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          テーブルの作成内容をご入力ください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: テーブルの作成内容をご入力
+        type: answer
+        variables: []
+      height: 131
+      id: answer
+      position:
+        x: 1720.9384999480026
+        y: 506.8318229499715
+      positionAbsolute:
+        x: 1720.9384999480026
+        y: 506.8318229499715
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\ndef main(user_query: str) -> dict:\n    cleaned = user_query.strip()\n\
+          \    mapping = {\"０\": \"0\", \"１\": \"1\", \"２\": \"2\", \"３\": \"3\"}\n\
+          \    converted = mapping.get(cleaned, cleaned)\n    return {\n        \"\
+          user_query\": converted,\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          user_query:
+            children: null
+            type: string
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 1000
+        selected: false
+        title: クリーニング
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - query
+          value_type: string
+          variable: user_query
+      height: 80
+      id: '1752719187495'
+      position:
+        x: 349.6729323226566
+        y: 551.6428571428572
+      positionAbsolute:
+        x: 349.6729323226566
+        y: 551.6428571428572
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 9048e068-8d1f-4001-a746-991b8b5ef7dd
+            value: '0'
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          id: 'true'
+          logical_operator: and
+        - case_id: 6c96e2fd-199d-4758-b477-2280ec5b1875
+          conditions:
+          - comparison_operator: is
+            id: 73f90443-8b0f-4608-b58a-04ef6dd8b476
+            value: '1'
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          - comparison_operator: empty
+            id: 78e457cd-d9a6-4fc8-94a3-8763cea970c9
+            value: '1'
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type
+          id: 6c96e2fd-199d-4758-b477-2280ec5b1875
+          logical_operator: and
+        - case_id: 0d4d78c9-612a-4c97-b6f7-095831dae7e2
+          conditions:
+          - comparison_operator: is
+            id: b6f522db-6613-467e-8abe-c1afe4d8ad38
+            value: '2'
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          - comparison_operator: empty
+            id: c152334c-d9ba-4ca8-85a2-c22a302b69c8
+            value: '2'
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type
+          id: 0d4d78c9-612a-4c97-b6f7-095831dae7e2
+          logical_operator: and
+        - case_id: ff870cc7-eaf6-4b7b-be87-0ec007708aa5
+          conditions:
+          - comparison_operator: is
+            id: 82ddd022-e76e-431f-9b0b-e951c71c9771
+            value: '3'
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          - comparison_operator: empty
+            id: 98332aac-57aa-466f-8445-4cc1039b7e29
+            value: '3'
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type
+          id: ff870cc7-eaf6-4b7b-be87-0ec007708aa5
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: クエリタイプの判断
+        type: if-else
+      height: 345
+      id: '1752725177971'
+      position:
+        x: 709.4285714285714
+        y: 551.6428571428572
+      positionAbsolute:
+        x: 709.4285714285714
+        y: 551.6428571428572
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752719187495'
+          - user_query
+          variable_selector:
+          - conversation
+          - query_type
+          write_mode: over-write
+        selected: false
+        title: クエリタイプの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '1752725440517'
+      position:
+        x: 1297.3929263077555
+        y: 16.97871631038423
+      positionAbsolute:
+        x: 1297.3929263077555
+        y: 16.97871631038423
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 6c96e2fd-199d-4758-b477-2280ec5b1875
+          conditions:
+          - comparison_operator: is
+            id: 73f90443-8b0f-4608-b58a-04ef6dd8b476
+            value: '1'
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type
+          id: 6c96e2fd-199d-4758-b477-2280ec5b1875
+          logical_operator: and
+        - case_id: 0d4d78c9-612a-4c97-b6f7-095831dae7e2
+          conditions:
+          - comparison_operator: is
+            id: b6f522db-6613-467e-8abe-c1afe4d8ad38
+            value: '2'
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type
+          id: 0d4d78c9-612a-4c97-b6f7-095831dae7e2
+          logical_operator: and
+        - case_id: ff870cc7-eaf6-4b7b-be87-0ec007708aa5
+          conditions:
+          - comparison_operator: is
+            id: 82ddd022-e76e-431f-9b0b-e951c71c9771
+            value: '3'
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type
+          id: ff870cc7-eaf6-4b7b-be87-0ec007708aa5
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE (1)
+        type: if-else
+      height: 219
+      id: '17527260165540'
+      position:
+        x: 1297.3929263077555
+        y: 1265.4676950832106
+      positionAbsolute:
+        x: 1297.3929263077555
+        y: 1265.4676950832106
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '
+
+            {{#sys.query#}}
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 2
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: meta.llama-4-scout-17b-16e-instruct
+          provider: langgenius/oci/oci
+        prompt_template:
+        - id: 570c2a71-2606-4137-93dc-ef80c468bef8
+          role: system
+          text: 'あなたはOracle SQLの専門家として、以下の指示に従って1つのCREATE TABLE文を生成してください：
+
+
+            **役割と責任:**
+
+            - Oracle SQLの専門知識を活用し、正確で実用的なCREATE TABLE文を作成する
+
+            - Oracle特有の構文、データ型、制約を適切に使用する
+
+            - 業界標準のベストプラクティスに従う
+
+
+            **出力要件:**
+
+            - 生成されたCREATE TABLE SQL文のみを出力する
+
+            - 説明、コメント、その他の補足情報は一切含めない
+
+            - 実行可能な完全なSQL文を提供する
+
+
+            **技術仕様:**
+
+            - 文字列型カラムは全てVARCHAR2(4000)を使用する
+
+            - 適切なOracle SQLデータ型を選択する（NUMBER、DATE、TIMESTAMP、CLOB等）
+
+            - 主キー、外部キー、NOT NULL制約を適切に設定する
+
+            - カラム名とテーブル名はOracle命名規則に従う
+
+            - 必要に応じてデフォルト値を設定する
+
+
+            **品質基準:**
+
+            - 構文エラーのない完全なSQL文
+
+            - 論理的で一貫性のあるテーブル設計
+
+            - パフォーマンスとメンテナンス性を考慮した設計
+
+            - Oracle環境での実行を保証する
+
+
+            ユーザーからのテーブル作成要求に対して、上記の基準を満たすCREATE TABLE文を生成してください。'
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              sql:
+                type: string
+            required:
+            - sql
+            type: object
+        structured_output_enabled: true
+        title: CREATE TABLE文を生成
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 87
+      id: '1752726046622'
+      position:
+        x: 2180.0627765565882
+        y: 1623.4022001808712
+      positionAbsolute:
+        x: 2180.0627765565882
+        y: 1623.4022001808712
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          を実行しますか？実行する場合は「Y」と入力してください。
+
+
+          他のリクエストがある場合、リクエストをご入力ください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: SQL文を出力
+        type: answer
+        variables: []
+      height: 183
+      id: '1752726179343'
+      position:
+        x: 3235.149636599812
+        y: 1623.4022001808712
+      positionAbsolute:
+        x: 3235.149636599812
+        y: 1623.4022001808712
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ sql_json.sql }}'
+        title: SQL文を取得
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1752726046622'
+          - structured_output
+          value_type: object
+          variable: sql_json
+      height: 51
+      id: '1752726401052'
+      position:
+        x: 2534.689487771027
+        y: 1623.4022001808712
+      positionAbsolute:
+        x: 2534.689487771027
+        y: 1623.4022001808712
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752726401052'
+          - output
+          variable_selector:
+          - conversation
+          - cached_sql
+          write_mode: over-write
+        selected: false
+        title: SQL文をキャッシュ
+        type: assigner
+        version: '2'
+      height: 83
+      id: '1752726512118'
+      position:
+        x: 2897.065570064053
+        y: 1693.9155462291374
+      positionAbsolute:
+        x: 2897.065570064053
+        y: 1693.9155462291374
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '実行したい処理の番号をご入力ください。
+
+
+          - 1: SQLを実行する
+
+          - 2: CREATE TABLE文を生成する
+
+          - 3: INSERT文を生成する'
+        desc: ''
+        selected: false
+        title: 選択メニュー
+        type: answer
+        variables: []
+      height: 147
+      id: '17527266583930'
+      position:
+        x: 1714.944813831889
+        y: 16.97871631038423
+      positionAbsolute:
+        x: 1714.944813831889
+        y: 16.97871631038423
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The SQL query string.
+            ja_JP: The SQL query string.
+            pt_BR: The SQL query string.
+            zh_Hans: SQL 查询语句。
+          label:
+            en_US: SQL Query
+            ja_JP: SQL Query
+            pt_BR: SQL Query
+            zh_Hans: SQL 查询语句
+          llm_description: The SQL query string.
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            ja_JP: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            pt_BR: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            zh_Hans: 选填，填写后将覆盖授权时填写的数据库连接。
+          label:
+            en_US: DB URI
+            ja_JP: DB URI
+            pt_BR: DB URI
+            zh_Hans: DB URI
+          llm_description: ''
+          max: null
+          min: null
+          name: db_uri
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: json
+          form: form
+          human_description:
+            en_US: Choose the output format.
+            ja_JP: Choose the output format.
+            pt_BR: Choose the output format.
+            zh_Hans: 选择输出格式。
+          label:
+            en_US: Output format
+            ja_JP: Output format
+            pt_BR: Output format
+            zh_Hans: 输出格式
+          llm_description: ''
+          max: null
+          min: null
+          name: format
+          options:
+          - icon: ''
+            label:
+              en_US: JSON
+              ja_JP: JSON
+              pt_BR: JSON
+              zh_Hans: JSON
+            value: json
+          - icon: ''
+            label:
+              en_US: CSV
+              ja_JP: CSV
+              pt_BR: CSV
+              zh_Hans: CSV
+            value: csv
+          - icon: ''
+            label:
+              en_US: YAML
+              ja_JP: YAML
+              pt_BR: YAML
+              zh_Hans: YAML
+            value: yaml
+          - icon: ''
+            label:
+              en_US: Markdown
+              ja_JP: Markdown
+              pt_BR: Markdown
+              zh_Hans: Markdown
+            value: md
+          - icon: ''
+            label:
+              en_US: Excel
+              ja_JP: Excel
+              pt_BR: Excel
+              zh_Hans: Excel
+            value: xlsx
+          - icon: ''
+            label:
+              en_US: HTML
+              ja_JP: HTML
+              pt_BR: HTML
+              zh_Hans: HTML
+            value: html
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            ja_JP: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            pt_BR: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            zh_Hans: '选填项。例如 {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              更多连接选项可参考 https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+          label:
+            en_US: DB Config Options
+            ja_JP: DB Config Options
+            pt_BR: DB Config Options
+            zh_Hans: 数据库连接配置选项
+          llm_description: ''
+          max: null
+          min: null
+          name: config_options
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          config_options: ''
+          db_uri: ''
+          format: ''
+          query: ''
+        provider_id: hjlarry/database/database
+        provider_name: hjlarry/database/database
+        provider_type: builtin
+        selected: false
+        title: SQL文を実行
+        tool_configurations:
+          config_options:
+            type: mixed
+            value: null
+          format:
+            type: constant
+            value: md
+        tool_description: This tool is used to execute SQL in an existing database.
+        tool_label: SQL Execute
+        tool_name: sql_execute
+        tool_parameters:
+          db_uri:
+            type: mixed
+            value: null
+          query:
+            type: mixed
+            value: '{{#1752728319950.sql#}}'
+        type: tool
+        version: '2'
+      height: 113
+      id: '1752728287896'
+      position:
+        x: 2906.589976375862
+        y: 1164.5483735023302
+      positionAbsolute:
+        x: 2906.589976375862
+        y: 1164.5483735023302
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\ndef main(cached_sql: str) -> dict:\n    return {\n        \"sql\"\
+          : cached_sql.rstrip(';'),\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          sql:
+            children: null
+            type: string
+        selected: false
+        title: SQL文をクリーニング
+        type: code
+        variables:
+        - value_selector:
+          - conversation
+          - cached_sql
+          value_type: string
+          variable: cached_sql
+      height: 51
+      id: '1752728319950'
+      position:
+        x: 2534.689487771027
+        y: 1326.4632808030867
+      positionAbsolute:
+        x: 2534.689487771027
+        y: 1326.4632808030867
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          {{#1752728287896.text#}}
+
+
+          ---
+
+
+          実行したい処理の番号をご入力ください。
+
+
+          - 1: SQLを実行する
+
+          - 2: CREATE TABLE文を生成する
+
+          - 3: INSERT文を生成する'
+        desc: ''
+        selected: false
+        title: 実行結果を出力
+        type: answer
+        variables: []
+      height: 170
+      id: '17527284151750'
+      position:
+        x: 3235.149636599812
+        y: 1164.5483735023302
+      positionAbsolute:
+        x: 3235.149636599812
+        y: 1164.5483735023302
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752719187495'
+          - user_query
+          variable_selector:
+          - conversation
+          - query_type
+          write_mode: over-write
+        selected: false
+        title: クエリタイプの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527285749740'
+      position:
+        x: 1297.3929263077555
+        y: 506.8318229499715
+      positionAbsolute:
+        x: 1297.3929263077555
+        y: 506.8318229499715
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752719187495'
+          - user_query
+          variable_selector:
+          - conversation
+          - query_type
+          write_mode: over-write
+        selected: false
+        title: クエリタイプの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527286876990'
+      position:
+        x: 1297.3929263077555
+        y: 307.10218005173084
+      positionAbsolute:
+        x: 1297.3929263077555
+        y: 307.10218005173084
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          実行したいSQL文をご入力ください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: SQL文を入力
+        type: answer
+        variables: []
+      height: 131
+      id: '17527287027970'
+      position:
+        x: 1714.944813831889
+        y: 307.10218005173084
+      positionAbsolute:
+        x: 1714.944813831889
+        y: 307.10218005173084
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 195e2c3c-dcb9-40d2-830f-5d04b866e8b3
+            value: Y
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: SQL文を実行しますか？
+        type: if-else
+      height: 123
+      id: '1752728963461'
+      position:
+        x: 2180.0627765565882
+        y: 1348.5056104614127
+      positionAbsolute:
+        x: 2180.0627765565882
+        y: 1348.5056104614127
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          ```sql
+
+          {{#1752732745408.result#}}
+
+          ```
+
+
+          が選択されました。
+
+
+          テキスト内容を入力してください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: テキスト内容をご入力
+        type: answer
+        variables: []
+      height: 166
+      id: '17527299802800'
+      position:
+        x: 2502.4066044781157
+        y: 2194.9522787358474
+      positionAbsolute:
+        x: 2502.4066044781157
+        y: 2194.9522787358474
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752719187495'
+          - user_query
+          variable_selector:
+          - conversation
+          - query_type
+          write_mode: over-write
+        selected: false
+        title: クエリタイプの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527299802801'
+      position:
+        x: 1297.3929263077555
+        y: 875.7299773977918
+      positionAbsolute:
+        x: 1297.3929263077555
+        y: 875.7299773977918
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Specify which tables schema you want to get. If not specified,
+              all tables will be used. Multi tables use comma to separate.
+            ja_JP: Specify which tables schema you want to get. If not specified,
+              all tables will be used. Multi tables use comma to separate.
+            pt_BR: Specify which tables schema you want to get. If not specified,
+              all tables will be used. Multi tables use comma to separate.
+            zh_Hans: 指定想要哪些表的结构，如不指定，则使用所有表。多张表用半角逗号隔开。
+          label:
+            en_US: Tables
+            ja_JP: Tables
+            pt_BR: Tables
+            zh_Hans: 表
+          llm_description: Specify which tables schema you want to get. If not specified,
+            all tables will be used. Multi tables use comma to separate.
+          max: null
+          min: null
+          name: tables
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            ja_JP: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            pt_BR: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            zh_Hans: 选填，填写后将覆盖授权时填写的数据库连接。
+          label:
+            en_US: DB URI
+            ja_JP: DB URI
+            pt_BR: DB URI
+            zh_Hans: DB URI
+          llm_description: ''
+          max: null
+          min: null
+          name: db_uri
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: secret-input
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            ja_JP: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            pt_BR: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            zh_Hans: '选填项。例如 {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              更多连接选项可参考 https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+          label:
+            en_US: DB Config Options
+            ja_JP: DB Config Options
+            pt_BR: DB Config Options
+            zh_Hans: 数据库连接配置选项
+          llm_description: ''
+          max: null
+          min: null
+          name: config_options
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: Schema name. If `schema` is left empty, the database's default
+              schema(like the `public` of postgresql) is used, else the named schema
+              is searched
+            ja_JP: Schema name. If `schema` is left empty, the database's default
+              schema(like the `public` of postgresql) is used, else the named schema
+              is searched
+            pt_BR: Schema name. If `schema` is left empty, the database's default
+              schema(like the `public` of postgresql) is used, else the named schema
+              is searched
+            zh_Hans: 数据库schema名称。如果 `schema` 留空，则使用数据库的默认schema(例如postgresql中的public)，否则使用指定的schema。
+          label:
+            en_US: Schema
+            ja_JP: Schema
+            pt_BR: Schema
+            zh_Hans: Schema
+          llm_description: ''
+          max: null
+          min: null
+          name: schema
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          config_options: ''
+          db_uri: ''
+          schema: ''
+          tables: ''
+        provider_id: hjlarry/database/database
+        provider_name: hjlarry/database/database
+        provider_type: builtin
+        selected: false
+        title: TABLE情報を取得
+        tool_configurations:
+          config_options:
+            type: mixed
+            value: null
+          schema:
+            type: mixed
+            value: null
+        tool_description: get the table schema from the database.
+        tool_label: Get Table Schema
+        tool_name: table_schema
+        tool_parameters:
+          db_uri:
+            type: mixed
+            value: ''
+          tables:
+            type: mixed
+            value: '{{#conversation.cached_table_name#}}'
+        type: tool
+        version: '2'
+      height: 113
+      id: '1752730187065'
+      position:
+        x: 2497.183301098339
+        y: 2397.705138698279
+      positionAbsolute:
+        x: 2497.183301098339
+        y: 2397.705138698279
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "import json\n\ndef main(text: str,table_name: str) -> dict:\n    return\
+          \ {\n        \"table_info\": json.dumps(json.loads(text)[table_name]),\n\
+          \    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          table_info:
+            children: null
+            type: string
+        selected: false
+        title: 文字列へ変換
+        type: code
+        variables:
+        - value_selector:
+          - '1752730187065'
+          - text
+          value_type: string
+          variable: text
+        - value_selector:
+          - conversation
+          - cached_table_name
+          value_type: string
+          variable: table_name
+      height: 51
+      id: '1752730267644'
+      position:
+        x: 2864.555638809305
+        y: 2397.705138698279
+      positionAbsolute:
+        x: 2864.555638809305
+        y: 2397.705138698279
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1752730267644'
+          - table_info
+        desc: ''
+        memory:
+          query_prompt_template: '
+
+            {{#sys.query#}}
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 2
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: meta.llama-4-scout-17b-16e-instruct
+          provider: langgenius/oci/oci
+        prompt_template:
+        - id: d0604a6d-6268-4c3c-8477-82716816ef49
+          role: system
+          text: '
+
+            ## 役割
+
+            あなたはOracle SQLの専門家です。テーブル定義を正確に理解し、ユーザーの要求に基づいて適切なINSERT SQL文を生成することが役割です。
+
+
+            ## 入力形式
+
+            - **テーブル定義**: `---table_definition---`セクションに記載されたテーブル構造
+
+            - **ユーザークエリ**: `---query---`セクションに記載されたデータ挿入要求
+
+
+            ## 出力要件
+
+            1. **出力内容**: 生成されたINSERT SQL文のみを出力
+
+            2. **その他の内容**: 説明文、コメント、追加情報は一切出力しない
+
+            3. **SQL品質**: 文法的に正しく、実行可能なOracle SQL文を生成
+
+            4. VARCHAR型のカラムに対しては、その最大長さを超えないように
+
+
+            ## 処理ガイドライン
+
+            - テーブル定義のカラム名、データ型、制約を正確に把握する
+
+            - ユーザークエリから必要なデータを抽出し、適切な形式で挿入文を構成する
+
+            - Oracle SQLの構文規則に従って文を生成する
+
+            - データ型に応じた適切な値の形式（文字列のクォート、日付形式等）を使用する
+
+            - 必須カラムの確認と適切な値の設定を行う
+
+
+            ## 注意事項
+
+            - 複数レコードの挿入が必要な場合は、適切なINSERT文を生成する
+
+            - シーケンスやデフォルト値が設定されている場合は考慮する
+
+            - 制約違反を避けるため、データ型と制約を厳密に確認する
+
+
+            ---
+
+
+            ## 入力セクション
+
+
+            ### テーブル定義
+
+
+            ---table_definition---
+
+
+            {{#context#}}'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 1000
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              sql:
+                type: string
+            required:
+            - sql
+            type: object
+        structured_output_enabled: false
+        title: INSERT文を生成
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 116
+      id: '1752730414727'
+      position:
+        x: 3171.7855510562094
+        y: 2329.5443545304406
+      positionAbsolute:
+        x: 3171.7855510562094
+        y: 2329.5443545304406
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          を実行しますか？実行する場合は「Y」と入力してください。
+
+
+          他のリクエストがある場合、リクエストを入力してください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: INSERT文の出力
+        type: answer
+        variables: []
+      height: 183
+      id: '1752730483389'
+      position:
+        x: 3899.0976277044483
+        y: 2300.748849628309
+      positionAbsolute:
+        x: 3899.0976277044483
+        y: 2300.748849628309
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The SQL query string.
+            ja_JP: The SQL query string.
+            pt_BR: The SQL query string.
+            zh_Hans: SQL 查询语句。
+          label:
+            en_US: SQL Query
+            ja_JP: SQL Query
+            pt_BR: SQL Query
+            zh_Hans: SQL 查询语句
+          llm_description: The SQL query string.
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            ja_JP: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            pt_BR: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            zh_Hans: 选填，填写后将覆盖授权时填写的数据库连接。
+          label:
+            en_US: DB URI
+            ja_JP: DB URI
+            pt_BR: DB URI
+            zh_Hans: DB URI
+          llm_description: ''
+          max: null
+          min: null
+          name: db_uri
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: json
+          form: form
+          human_description:
+            en_US: Choose the output format.
+            ja_JP: Choose the output format.
+            pt_BR: Choose the output format.
+            zh_Hans: 选择输出格式。
+          label:
+            en_US: Output format
+            ja_JP: Output format
+            pt_BR: Output format
+            zh_Hans: 输出格式
+          llm_description: ''
+          max: null
+          min: null
+          name: format
+          options:
+          - icon: ''
+            label:
+              en_US: JSON
+              ja_JP: JSON
+              pt_BR: JSON
+              zh_Hans: JSON
+            value: json
+          - icon: ''
+            label:
+              en_US: CSV
+              ja_JP: CSV
+              pt_BR: CSV
+              zh_Hans: CSV
+            value: csv
+          - icon: ''
+            label:
+              en_US: YAML
+              ja_JP: YAML
+              pt_BR: YAML
+              zh_Hans: YAML
+            value: yaml
+          - icon: ''
+            label:
+              en_US: Markdown
+              ja_JP: Markdown
+              pt_BR: Markdown
+              zh_Hans: Markdown
+            value: md
+          - icon: ''
+            label:
+              en_US: Excel
+              ja_JP: Excel
+              pt_BR: Excel
+              zh_Hans: Excel
+            value: xlsx
+          - icon: ''
+            label:
+              en_US: HTML
+              ja_JP: HTML
+              pt_BR: HTML
+              zh_Hans: HTML
+            value: html
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            ja_JP: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            pt_BR: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            zh_Hans: '选填项。例如 {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              更多连接选项可参考 https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+          label:
+            en_US: DB Config Options
+            ja_JP: DB Config Options
+            pt_BR: DB Config Options
+            zh_Hans: 数据库连接配置选项
+          llm_description: ''
+          max: null
+          min: null
+          name: config_options
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          config_options: ''
+          db_uri: ''
+          format: ''
+          query: ''
+        provider_id: hjlarry/database/database
+        provider_name: hjlarry/database/database
+        provider_type: builtin
+        selected: false
+        title: テーブル一覧を取得
+        tool_configurations:
+          config_options:
+            type: mixed
+            value: null
+          format:
+            type: constant
+            value: md
+        tool_description: This tool is used to execute SQL in an existing database.
+        tool_label: SQL Execute
+        tool_name: sql_execute
+        tool_parameters:
+          db_uri:
+            type: mixed
+            value: ''
+          query:
+            type: mixed
+            value: '{{#env.get_user_tables_sql#}}'
+        type: tool
+        version: '2'
+      height: 113
+      id: '1752730791956'
+      position:
+        x: 1697
+        y: 875.7299773977918
+      positionAbsolute:
+        x: 1697
+        y: 875.7299773977918
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          {{#1752730791956.text#}}
+
+
+
+          使用したいテーブルの番号をご入力ください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。
+
+
+          '
+        desc: ''
+        selected: false
+        title: テーブル一覧を出力
+        type: answer
+        variables: []
+      height: 150
+      id: '1752730821159'
+      position:
+        x: 2196.234654891731
+        y: 955.2913188857444
+      positionAbsolute:
+        x: 2196.234654891731
+        y: 955.2913188857444
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step1_complete
+          variable_selector:
+          - conversation
+          - query_type_3_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '1752731100310'
+      position:
+        x: 2196.234654891731
+        y: 663.062033136936
+      positionAbsolute:
+        x: 2196.234654891731
+        y: 663.062033136936
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 420f3f3b-7d5c-465c-b39c-91a297971786
+            value: step1_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_3_status
+          id: 'true'
+          logical_operator: and
+        - case_id: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+          conditions:
+          - comparison_operator: is
+            id: c3294d17-727b-4d0f-b5de-92d12a3ffd95
+            value: step2_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_3_status
+          id: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+          logical_operator: and
+        - case_id: 350fa5a7-0a73-448f-a6eb-a6ee1c2cd578
+          conditions:
+          - comparison_operator: is
+            id: 3d23c170-44d2-4a54-b0c8-00053bf52d59
+            value: step3_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_3_status
+          id: 350fa5a7-0a73-448f-a6eb-a6ee1c2cd578
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: ステータスの判断
+        type: if-else
+      height: 219
+      id: '1752732162477'
+      position:
+        x: 1676.226680189429
+        y: 2263.684207277242
+      positionAbsolute:
+        x: 1676.226680189429
+        y: 2263.684207277242
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752730791956'
+          - text
+          variable_selector:
+          - conversation
+          - tables_markdown_text
+          write_mode: over-write
+        selected: false
+        title: テーブル一覧をキャッシュ
+        type: assigner
+        version: '2'
+      height: 83
+      id: '1752732615710'
+      position:
+        x: 2196.234654891731
+        y: 816.4452873506056
+      positionAbsolute:
+        x: 2196.234654891731
+        y: 816.4452873506056
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '実行したい処理の番号をご入力ください。
+
+
+          - 1: SQLを実行する
+
+          - 2: CREATE TABLE文を生成する
+
+          - 3: INSERT文を生成する'
+        desc: ''
+        selected: false
+        title: 選択メニュー
+        type: answer
+        variables: []
+      height: 147
+      id: '17527327228490'
+      position:
+        x: 1676.226680189429
+        y: 3156.7393540260528
+      positionAbsolute:
+        x: 1676.226680189429
+        y: 3156.7393540260528
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\nimport re\n\ndef main(row_id: str, markdown_text: str) -> dict:\n\
+          \    try:\n        rid = int(row_id)\n    except ValueError:\n        return\
+          \ {\"result\": \"\"}\n\n    lines = [ln.strip() for ln in markdown_text.strip().splitlines()\
+          \ if ln.strip()]\n\n    for line in lines[2:]:\n        m = re.match(r'^(\\\
+          d+)\\s*\\|\\s*(.+?)\\s*$', line)\n        if m:\n            cur_id, table_name\
+          \ = int(m.group(1)), m.group(2).strip()\n            if cur_id == rid:\n\
+          \                return {\"result\": table_name}\n\n    return {\"result\"\
+          : \"NOT_FOUND\"}"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: テーブル名を取得
+        type: code
+        variables:
+        - value_selector:
+          - '1752719187495'
+          - user_query
+          value_type: string
+          variable: row_id
+        - value_selector:
+          - conversation
+          - tables_markdown_text
+          value_type: string
+          variable: markdown_text
+      height: 51
+      id: '1752732745408'
+      position:
+        x: 2112.254066366522
+        y: 2194.9522787358474
+      positionAbsolute:
+        x: 2112.254066366522
+        y: 2194.9522787358474
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752732745408'
+          - result
+          variable_selector:
+          - conversation
+          - cached_table_name
+          write_mode: over-write
+        selected: false
+        title: テーブル名をキャッシュ
+        type: assigner
+        version: '2'
+      height: 83
+      id: '1752733478355'
+      position:
+        x: 2858.387348269604
+        y: 2101.985379969102
+      positionAbsolute:
+        x: 2858.387348269604
+        y: 2101.985379969102
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step2_complete
+          variable_selector:
+          - conversation
+          - query_type_3_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527335146740'
+      position:
+        x: 2858.387348269604
+        y: 2238.479806900654
+      positionAbsolute:
+        x: 2858.387348269604
+        y: 2238.479806900654
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '17537600882880'
+          - sql
+          variable_selector:
+          - conversation
+          - cached_sql
+          write_mode: over-write
+        selected: false
+        title: SQL文をキャッシュ
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527340748720'
+      position:
+        x: 3495.601512244544
+        y: 2503.0903406029042
+      positionAbsolute:
+        x: 3495.601512244544
+        y: 2503.0903406029042
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - cached_sql
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - cached_table_name
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - tables_markdown_text
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type_3_status
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type_2_status
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type_1_status
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type
+          write_mode: over-write
+        selected: false
+        title: 会話変数を初期化
+        type: assigner
+        version: '2'
+      height: 239
+      id: '1752734632021'
+      position:
+        x: 2196.234654891731
+        y: 16.97871631038423
+      positionAbsolute:
+        x: 2196.234654891731
+        y: 16.97871631038423
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step3_complete
+          variable_selector:
+          - conversation
+          - query_type_3_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527350319640'
+      position:
+        x: 3495.601512244544
+        y: 2238.479806900654
+      positionAbsolute:
+        x: 3495.601512244544
+        y: 2238.479806900654
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 195e2c3c-dcb9-40d2-830f-5d04b866e8b3
+            value: Y
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: SQL文を実行しますか？
+        type: if-else
+      height: 123
+      id: '17527352209850'
+      position:
+        x: 2112.254066366522
+        y: 2494.4026134202923
+      positionAbsolute:
+        x: 2112.254066366522
+        y: 2494.4026134202923
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The SQL query string.
+            ja_JP: The SQL query string.
+            pt_BR: The SQL query string.
+            zh_Hans: SQL 查询语句。
+          label:
+            en_US: SQL Query
+            ja_JP: SQL Query
+            pt_BR: SQL Query
+            zh_Hans: SQL 查询语句
+          llm_description: The SQL query string.
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            ja_JP: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            pt_BR: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            zh_Hans: 选填，填写后将覆盖授权时填写的数据库连接。
+          label:
+            en_US: DB URI
+            ja_JP: DB URI
+            pt_BR: DB URI
+            zh_Hans: DB URI
+          llm_description: ''
+          max: null
+          min: null
+          name: db_uri
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: json
+          form: form
+          human_description:
+            en_US: Choose the output format.
+            ja_JP: Choose the output format.
+            pt_BR: Choose the output format.
+            zh_Hans: 选择输出格式。
+          label:
+            en_US: Output format
+            ja_JP: Output format
+            pt_BR: Output format
+            zh_Hans: 输出格式
+          llm_description: ''
+          max: null
+          min: null
+          name: format
+          options:
+          - icon: ''
+            label:
+              en_US: JSON
+              ja_JP: JSON
+              pt_BR: JSON
+              zh_Hans: JSON
+            value: json
+          - icon: ''
+            label:
+              en_US: CSV
+              ja_JP: CSV
+              pt_BR: CSV
+              zh_Hans: CSV
+            value: csv
+          - icon: ''
+            label:
+              en_US: YAML
+              ja_JP: YAML
+              pt_BR: YAML
+              zh_Hans: YAML
+            value: yaml
+          - icon: ''
+            label:
+              en_US: Markdown
+              ja_JP: Markdown
+              pt_BR: Markdown
+              zh_Hans: Markdown
+            value: md
+          - icon: ''
+            label:
+              en_US: Excel
+              ja_JP: Excel
+              pt_BR: Excel
+              zh_Hans: Excel
+            value: xlsx
+          - icon: ''
+            label:
+              en_US: HTML
+              ja_JP: HTML
+              pt_BR: HTML
+              zh_Hans: HTML
+            value: html
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            ja_JP: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            pt_BR: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            zh_Hans: '选填项。例如 {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              更多连接选项可参考 https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+          label:
+            en_US: DB Config Options
+            ja_JP: DB Config Options
+            pt_BR: DB Config Options
+            zh_Hans: 数据库连接配置选项
+          llm_description: ''
+          max: null
+          min: null
+          name: config_options
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          config_options: ''
+          db_uri: ''
+          format: ''
+          query: ''
+        provider_id: hjlarry/database/database
+        provider_name: hjlarry/database/database
+        provider_type: builtin
+        selected: true
+        title: SQL文を実行
+        tool_configurations:
+          config_options:
+            type: mixed
+            value: null
+          format:
+            type: constant
+            value: json
+        tool_description: This tool is used to execute SQL in an existing database.
+        tool_label: SQL Execute
+        tool_name: sql_execute
+        tool_parameters:
+          db_uri:
+            type: mixed
+            value: ''
+          query:
+            type: mixed
+            value: '{{#17527355363321.sql#}}'
+        type: tool
+        version: '2'
+      height: 113
+      id: '17527355363320'
+      position:
+        x: 2858.387348269604
+        y: 2577.639997647343
+      positionAbsolute:
+        x: 2858.387348269604
+        y: 2577.639997647343
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\nimport re\n\ndef main(cached_sql: str) -> dict:\n    # 去掉首尾可能出现的\
+          \ ```sql 和 ```\n    cleaned = re.sub(r'^```sql\\s*|\\s*```$', '', cached_sql.strip())\n\
+          \    return {\"sql\": cleaned.rstrip(';')}"
+        code_language: python3
+        desc: ''
+        outputs:
+          sql:
+            children: null
+            type: string
+        selected: false
+        title: 'SQL文をクリーニング '
+        type: code
+        variables:
+        - value_selector:
+          - conversation
+          - cached_sql
+          value_type: string
+          variable: cached_sql
+      height: 51
+      id: '17527355363321'
+      position:
+        x: 2497.183301098339
+        y: 2577.639997647343
+      positionAbsolute:
+        x: 2497.183301098339
+        y: 2577.639997647343
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          {{#17527355363320.text#}}
+
+
+          ---
+
+
+          実行したい処理の番号をご入力ください。
+
+
+          - 1: SQLを実行する
+
+          - 2: CREATE TABLE文を生成する
+
+          - 3: INSERT文を生成する'
+        desc: ''
+        selected: false
+        title: 実行結果を出力
+        type: answer
+        variables: []
+      height: 170
+      id: '17527355363322'
+      position:
+        x: 3251.847354521629
+        y: 2577.639997647343
+      positionAbsolute:
+        x: 3251.847354521629
+        y: 2577.639997647343
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step1_complete
+          variable_selector:
+          - conversation
+          - query_type_2_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527399312520'
+      position:
+        x: 2196.234654891731
+        y: 506.8318229499715
+      positionAbsolute:
+        x: 2196.234654891731
+        y: 506.8318229499715
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 420f3f3b-7d5c-465c-b39c-91a297971786
+            value: step1_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_2_status
+          id: 'true'
+          logical_operator: and
+        - case_id: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+          conditions:
+          - comparison_operator: is
+            id: c3294d17-727b-4d0f-b5de-92d12a3ffd95
+            value: step2_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_2_status
+          id: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: ステータスの判断
+        type: if-else
+      height: 171
+      id: '17527399822610'
+      position:
+        x: 1676.226680189429
+        y: 1794.9312776678241
+      positionAbsolute:
+        x: 1676.226680189429
+        y: 1794.9312776678241
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is not
+            id: 195e2c3c-dcb9-40d2-830f-5d04b866e8b3
+            value: Y
+            varType: string
+            variable_selector:
+            - '1752719187495'
+            - user_query
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 'SQL文を実行しますか？ '
+        type: if-else
+      height: 123
+      id: '17527401102810'
+      position:
+        x: 2180.0627765565882
+        y: 1834.6368687893942
+      positionAbsolute:
+        x: 2180.0627765565882
+        y: 1834.6368687893942
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step2_complete
+          variable_selector:
+          - conversation
+          - query_type_2_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527401251820'
+      position:
+        x: 2897.065570064053
+        y: 1580.8291652323294
+      positionAbsolute:
+        x: 2897.065570064053
+        y: 1580.8291652323294
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\nimport re\n\ndef main(cached_sql: str) -> dict:\n    # 去掉首尾可能出现的\
+          \ ```sql 和 ```\n    cleaned = re.sub(r'^```sql\\s*|\\s*```$', '', cached_sql.strip())\n\
+          \    return {\"sql\": cleaned.rstrip(';')}"
+        code_language: python3
+        desc: ''
+        outputs:
+          sql:
+            children: null
+            type: string
+        selected: false
+        title: 'SQL文をクリーニング '
+        type: code
+        variables:
+        - value_selector:
+          - conversation
+          - cached_sql
+          value_type: string
+          variable: cached_sql
+      height: 51
+      id: '17527401562560'
+      position:
+        x: 2513.080673341968
+        y: 1869.355591552343
+      positionAbsolute:
+        x: 2513.080673341968
+        y: 1869.355591552343
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The SQL query string.
+            ja_JP: The SQL query string.
+            pt_BR: The SQL query string.
+            zh_Hans: SQL 查询语句。
+          label:
+            en_US: SQL Query
+            ja_JP: SQL Query
+            pt_BR: SQL Query
+            zh_Hans: SQL 查询语句
+          llm_description: The SQL query string.
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            ja_JP: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            pt_BR: Optional, Filling in this field will overwrite the database connection
+              entered during authorization.
+            zh_Hans: 选填，填写后将覆盖授权时填写的数据库连接。
+          label:
+            en_US: DB URI
+            ja_JP: DB URI
+            pt_BR: DB URI
+            zh_Hans: DB URI
+          llm_description: ''
+          max: null
+          min: null
+          name: db_uri
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: json
+          form: form
+          human_description:
+            en_US: Choose the output format.
+            ja_JP: Choose the output format.
+            pt_BR: Choose the output format.
+            zh_Hans: 选择输出格式。
+          label:
+            en_US: Output format
+            ja_JP: Output format
+            pt_BR: Output format
+            zh_Hans: 输出格式
+          llm_description: ''
+          max: null
+          min: null
+          name: format
+          options:
+          - icon: ''
+            label:
+              en_US: JSON
+              ja_JP: JSON
+              pt_BR: JSON
+              zh_Hans: JSON
+            value: json
+          - icon: ''
+            label:
+              en_US: CSV
+              ja_JP: CSV
+              pt_BR: CSV
+              zh_Hans: CSV
+            value: csv
+          - icon: ''
+            label:
+              en_US: YAML
+              ja_JP: YAML
+              pt_BR: YAML
+              zh_Hans: YAML
+            value: yaml
+          - icon: ''
+            label:
+              en_US: Markdown
+              ja_JP: Markdown
+              pt_BR: Markdown
+              zh_Hans: Markdown
+            value: md
+          - icon: ''
+            label:
+              en_US: Excel
+              ja_JP: Excel
+              pt_BR: Excel
+              zh_Hans: Excel
+            value: xlsx
+          - icon: ''
+            label:
+              en_US: HTML
+              ja_JP: HTML
+              pt_BR: HTML
+              zh_Hans: HTML
+            value: html
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            ja_JP: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            pt_BR: 'Optional. For example {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              More connection options can be found at https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+            zh_Hans: '选填项。例如 {"connect_args": {"ssl": {"ca": "/path/to/ca.pem"}}}
+
+              更多连接选项可参考 https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine
+
+              '
+          label:
+            en_US: DB Config Options
+            ja_JP: DB Config Options
+            pt_BR: DB Config Options
+            zh_Hans: 数据库连接配置选项
+          llm_description: ''
+          max: null
+          min: null
+          name: config_options
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          config_options: ''
+          db_uri: ''
+          format: ''
+          query: ''
+        provider_id: hjlarry/database/database
+        provider_name: hjlarry/database/database
+        provider_type: builtin
+        selected: false
+        title: SQL文を実行
+        tool_configurations:
+          config_options:
+            type: mixed
+            value: null
+          format:
+            type: constant
+            value: json
+        tool_description: This tool is used to execute SQL in an existing database.
+        tool_label: SQL Execute
+        tool_name: sql_execute
+        tool_parameters:
+          db_uri:
+            type: mixed
+            value: null
+          query:
+            type: mixed
+            value: '{{#17527401562560.sql#}}'
+        type: tool
+        version: '2'
+      height: 113
+      id: '17527401837740'
+      position:
+        x: 2897.065570064053
+        y: 1869.355591552343
+      positionAbsolute:
+        x: 2897.065570064053
+        y: 1869.355591552343
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          {{#17527401837740.text#}}
+
+
+          ---
+
+
+          実行したい処理の番号をご入力ください。
+
+
+          - 1: SQLを実行する
+
+          - 2: CREATE TABLE文を生成する
+
+          - 3: INSERT文を生成する'
+        desc: ''
+        selected: false
+        title: '実行結果を出力 '
+        type: answer
+        variables: []
+      height: 170
+      id: '17527402039420'
+      position:
+        x: 3235.149636599812
+        y: 1834.6368687893942
+      positionAbsolute:
+        x: 3235.149636599812
+        y: 1834.6368687893942
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step1_complete
+          variable_selector:
+          - conversation
+          - query_type_1_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527407679470'
+      position:
+        x: 2196.234654891731
+        y: 307.10218005173084
+      positionAbsolute:
+        x: 2196.234654891731
+        y: 307.10218005173084
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 420f3f3b-7d5c-465c-b39c-91a297971786
+            value: step1_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_1_status
+          id: 'true'
+          logical_operator: and
+        - case_id: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+          conditions:
+          - comparison_operator: is
+            id: c3294d17-727b-4d0f-b5de-92d12a3ffd95
+            value: step2_complete
+            varType: string
+            variable_selector:
+            - conversation
+            - query_type_1_status
+          id: fd24d881-64c6-4deb-9ce3-82bd0bd808fe
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: ステータスの判断
+        type: if-else
+      height: 171
+      id: '17527408549440'
+      position:
+        x: 1697
+        y: 1326.4632808030867
+      positionAbsolute:
+        x: 1697
+        y: 1326.4632808030867
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752719187495'
+          - user_query
+          variable_selector:
+          - conversation
+          - cached_sql
+          write_mode: over-write
+        selected: false
+        title: SQL文をキャッシュ
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527409375450'
+      position:
+        x: 2180.0627765565882
+        y: 1231.5088454673482
+      positionAbsolute:
+        x: 2180.0627765565882
+        y: 1231.5088454673482
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          を実行しますか？実行する場合は「Y」と入力してください。
+
+
+          他のSQL文を実行したい場合は、別のSQL文をご入力ください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: SQL文を出力
+        type: answer
+        variables: []
+      height: 183
+      id: '17527409734480'
+      position:
+        x: 2534.689487771027
+        y: 1132.6464439531114
+      positionAbsolute:
+        x: 2534.689487771027
+        y: 1132.6464439531114
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: step2_complete
+          variable_selector:
+          - conversation
+          - query_type_1_status
+          write_mode: over-write
+        selected: false
+        title: ステータスの設定
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17527409891370'
+      position:
+        x: 2175.0230923570084
+        y: 1114.3361878271253
+      positionAbsolute:
+        x: 2175.0230923570084
+        y: 1114.3361878271253
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          ```sql
+
+          {{#conversation.cached_sql#}}
+
+          ```
+
+
+          を実行しますか？実行する場合は「Y」と入力してください。
+
+
+          他のSQL文を実行したい場合は、別のSQL文をご入力ください。
+
+
+          ---
+
+
+          選択メニューに戻る場合は「0」を入力してください。'
+        desc: ''
+        selected: false
+        title: SQL文を出力
+        type: answer
+        variables: []
+      height: 183
+      id: '17527411158410'
+      position:
+        x: 3235.149636599812
+        y: 1371.8097598846864
+      positionAbsolute:
+        x: 3235.149636599812
+        y: 1371.8097598846864
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - cached_sql
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - cached_table_name
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - tables_markdown_text
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type_3_status
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type_2_status
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type_1_status
+          write_mode: over-write
+        - input_type: variable
+          operation: clear
+          value: ''
+          variable_selector:
+          - conversation
+          - query_type
+          write_mode: over-write
+        selected: false
+        title: 会話変数を初期化
+        type: assigner
+        version: '2'
+      height: 239
+      id: '17528031842810'
+      position:
+        x: 4491.991090404492
+        y: 2641.485657645674
+      positionAbsolute:
+        x: 4491.991090404492
+        y: 2641.485657645674
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1752719187495'
+          - user_query
+          variable_selector:
+          - conversation
+          - cached_sql
+          write_mode: over-write
+        selected: false
+        title: SQL文をキャッシュ
+        type: assigner
+        version: '2'
+      height: 83
+      id: '17528044407780'
+      position:
+        x: 2541.653892277396
+        y: 1444.8302082752239
+      positionAbsolute:
+        x: 2541.653892277396
+        y: 1444.8302082752239
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\nimport re\n\ndef main(cached_sql: str) -> dict:\n    # 去掉首尾可能出现的\
+          \ ```sql 和 ```\n    cleaned = re.sub(r'^```sql\\s*|\\s*```$', '', cached_sql.strip())\n\
+          \    return {\"sql\": cleaned}"
+        code_language: python3
+        desc: ''
+        outputs:
+          sql:
+            children: null
+            type: string
+        selected: false
+        title: 'SQL文をクリーニング '
+        type: code
+        variables:
+        - value_selector:
+          - '1752730414727'
+          - text
+          value_type: string
+          variable: cached_sql
+      height: 51
+      id: '17537600882880'
+      position:
+        x: 3495.601512244544
+        y: 2416.2059860749546
+      positionAbsolute:
+        x: 3495.601512244544
+        y: 2416.2059860749546
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    viewport:
+      x: -482.40848941097397
+      y: -1293.9112905747807
+      zoom: 0.6299605249474354
+  rag_pipeline_variables: []
