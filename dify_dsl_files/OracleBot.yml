@@ -11,7 +11,7 @@ dependencies:
   value:
     marketplace_plugin_unique_identifier: hjlarry/database:0.0.6@534bc26cf5bc4ff6b5557457452287ccc71f00eef9378784c4f43ca49954ca2f
 kind: app
-version: 0.3.1
+version: 0.4.0
 workflow:
   conversation_variables: []
   environment_variables: []
@@ -65,10 +65,10 @@ workflow:
         isInLoop: false
         sourceType: start
         targetType: tool
-      id: 1756384287249-source-1756384301425-target
-      source: '1756384287249'
+      id: 1757050135191-source-1757050142757-target
+      source: '1757050135191'
       sourceHandle: source
-      target: '1756384301425'
+      target: '1757050142757'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -76,8 +76,8 @@ workflow:
         isInLoop: false
         sourceType: tool
         targetType: answer
-      id: 1756384301425-source-answer-target
-      source: '1756384301425'
+      id: 1757050142757-source-answer-target
+      source: '1757050142757'
       sourceHandle: source
       target: answer
       targetHandle: target
@@ -85,50 +85,29 @@ workflow:
       zIndex: 0
     nodes:
     - data:
-        desc: ''
-        selected: true
-        title: 開始
+        selected: false
+        title: Start
         type: start
-        variables:
-        - label: adb_user
-          max_length: 48
-          options: []
-          required: true
-          type: text-input
-          variable: adb_user
-        - label: adb_password
-          max_length: 48
-          options: []
-          required: true
-          type: text-input
-          variable: adb_password
-        - label: adb_connection_string
-          max_length: 256
-          options: []
-          required: true
-          type: paragraph
-          variable: adb_connection_string
-      height: 141
-      id: '1756384287249'
+        variables: []
+      height: 51
+      id: '1757050135191'
       position:
         x: 80
         y: 282
       positionAbsolute:
         x: 80
         y: 282
-      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
-        answer: '{{#1756384301425.text#}}'
-        desc: ''
+        answer: '{{#1757050142757.text#}}'
         selected: false
-        title: 回答
+        title: Answer
         type: answer
         variables: []
-      height: 104
+      height: 102
       id: answer
       position:
         x: 680
@@ -140,11 +119,9 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
-        desc: ''
         is_team_authorization: true
-        output_schema: null
         paramSchemas:
         - auto_generate: null
           default: null
@@ -327,25 +304,26 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: oracle+oracledb://{{#1756384287249.adb_user#}}:{{#1756384287249.adb_password#}}@{{#1756384287249.adb_connection_string#}}
+            value: null
           query:
             type: mixed
             value: '{{#sys.query#}}'
         type: tool
-      height: 115
-      id: '1756384301425'
+      height: 113
+      id: '1757050142757'
       position:
-        x: 384
+        x: 381
         y: 282
       positionAbsolute:
-        x: 384
+        x: 381
         y: 282
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     viewport:
-      x: -21
-      y: 35
+      x: -255
+      y: 74
       zoom: 1
+  rag_pipeline_variables: []
