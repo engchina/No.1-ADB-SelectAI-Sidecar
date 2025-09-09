@@ -2,8 +2,8 @@ app:
   description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
-  mode: workflow
-  name: SelectAIProfile作成くん
+  mode: advanced-chat
+  name: SelectAI実行くん
   use_icon_as_answer_icon: false
 dependencies:
 - current_identifier: null
@@ -61,68 +61,59 @@ workflow:
   graph:
     edges:
     - data:
+        isInIteration: false
         isInLoop: false
-        sourceType: if-else
-        targetType: tool
-      id: 1750054054809-true-1750052382530-target
-      source: '1750054054809'
-      sourceHandle: 'true'
-      target: '1750052382530'
+        sourceType: template-transform
+        targetType: answer
+      id: 1750060769683-source-1750061132375-target
+      source: '1750060769683'
+      sourceHandle: source
+      target: '1750061132375'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
+        isInIteration: false
         isInLoop: false
-        sourceType: tool
-        targetType: end
-      id: 17500527184870-source-1750052391361-target
-      source: '17500527184870'
+        sourceType: answer
+        targetType: tool
+      id: 1750061132375-source-1750061174790-target
+      source: '1750061132375'
       sourceHandle: source
-      target: '1750052391361'
+      target: '1750061174790'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
         sourceType: start
-        targetType: if-else
-      id: 1750052353565-source-1750054054809-target
-      source: '1750052353565'
+        targetType: tool
+      id: 1750058965453-source-1750059139720-target
+      source: '1750058965453'
       sourceHandle: source
-      target: '1750054054809'
+      target: '1750059139720'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
         sourceType: tool
-        targetType: code
-      id: 1750052382530-source-1750056741261-target
-      source: '1750052382530'
+        targetType: template-transform
+      id: 1750059139720-source-1750060769683-target
+      source: '1750059139720'
       sourceHandle: source
-      target: '1750056741261'
+      target: '1750060769683'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: if-else
-        targetType: code
-      id: 1750054054809-false-1750056741261-target
-      source: '1750054054809'
-      sourceHandle: 'false'
-      target: '1750056741261'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: code
-        targetType: tool
-      id: 1750056741261-source-17500527184870-target
-      source: '1750056741261'
+        sourceType: tool
+        targetType: answer
+      id: 1750061174790-source-1750830701284-target
+      source: '1750061174790'
       sourceHandle: source
-      target: '17500527184870'
+      target: '1750830701284'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -139,90 +130,14 @@ workflow:
           required: true
           type: text-input
           variable: profile_name
-        - label: drop_existing_profile
-          max_length: 256
-          options:
-          - 'Yes'
-          - 'No'
-          required: true
-          type: select
-          variable: drop_existing_profile
-        - label: credential_name
-          max_length: 256
-          options: []
-          required: true
-          type: text-input
-          variable: credential_name
-        - allowed_file_extensions:
-          - .pem
-          allowed_file_types:
-          - custom
-          allowed_file_upload_methods:
-          - local_file
-          label: provider
-          max_length: 256
-          options:
-          - oci
-          required: true
-          type: select
-          variable: provider
-        - label: region
-          max_length: 256
-          options:
-          - ap-osaka-1
-          - us-chicago-1
-          required: true
-          type: select
-          variable: region
-        - allowed_file_extensions:
-          - .pem
-          allowed_file_types:
-          - custom
-          allowed_file_upload_methods:
-          - local_file
-          label: model
-          max_length: 256
-          options:
-          - cohere.command-r-plus-08-2024
-          - cohere.command-a-03-2025
-          - meta.llama-3.3-70b-instruct
-          - meta.llama-4-maverick-17b-128e-instruct-fp8
-          - meta.llama-4-scout-17b-16e-instruct
-          required: true
-          type: select
-          variable: model
-        - label: object_list
-          max_length: 2048
-          options: []
-          required: true
-          type: paragraph
-          variable: object_list
-        - default: admin
-          hint: ''
-          label: adb_username
-          max_length: 48
-          options: []
-          placeholder: ''
-          required: true
-          type: text-input
-          variable: adb_username
-        - default: ''
-          hint: ''
-          label: compartment_id
-          max_length: 256
-          options: []
-          placeholder: ''
-          required: true
-          type: text-input
-          variable: compartment_id
-      height: 295
-      id: '1750052353565'
+      height: 87
+      id: '1750058965453'
       position:
         x: 30
-        y: 361.5
+        y: 259
       positionAbsolute:
         x: 30
-        y: 361.5
+        y: 259
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -393,7 +308,7 @@ workflow:
         provider_name: hjlarry/database/database
         provider_type: builtin
         selected: false
-        title: drop_profile
+        title: showsql_1
         tool_configurations:
           config_options:
             type: constant
@@ -411,24 +326,18 @@ workflow:
             value: ''
           query:
             type: mixed
-            value: 'BEGIN
-
-              DBMS_CLOUD_AI.DROP_PROFILE(
-
-              profile_name=> ''{{#1750052353565.profile_name#}}''
-
-              );
-
-              END;'
+            value: "SELECT DBMS_CLOUD_AI.GENERATE(\n    prompt => '{{#sys.query#}}',\n\
+              \    profile_name => '{{#1750058965453.profile_name#}}',\n    action\
+              \ => 'showsql'\n) FROM dual"
         type: tool
       height: 113
-      id: '1750052382530'
+      id: '1750059139720'
       position:
-        x: 638
-        y: 361.5
+        x: 331
+        y: 259
       positionAbsolute:
-        x: 638
-        y: 361.5
+        x: 331
+        y: 259
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -436,26 +345,57 @@ workflow:
       width: 241
     - data:
         desc: ''
-        outputs:
-        - value_selector:
-          - '1750052382530'
-          - text
-          variable: drop_profile_result
-        - value_selector:
-          - '17500527184870'
-          - text
-          variable: create_profile_result
         selected: false
-        title: 終了
-        type: end
-      height: 113
-      id: '1750052391361'
+        template: "{% set json_obj = json_array[0][\"result\"][0] %}\r\n{{ json_obj.values()\
+          \ | first }}"
+        title: extract_sql_statement_1
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1750059139720'
+          - json
+          value_type: array[object]
+          variable: json_array
+      height: 51
+      id: '1750060769683'
       position:
-        x: 1550
-        y: 361.5
+        x: 632
+        y: 259
       positionAbsolute:
-        x: 1550
-        y: 361.5
+        x: 632
+        y: 259
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          ---
+
+
+          # 生成されたSQL文：
+
+
+          {{#1750060769683.output#}}
+
+
+
+          '
+        desc: ''
+        selected: false
+        title: output_sql_statement
+        type: answer
+        variables: []
+      height: 118
+      id: '1750061132375'
+      position:
+        x: 933
+        y: 259
+      positionAbsolute:
+        x: 933
+        y: 259
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -625,15 +565,15 @@ workflow:
         provider_id: hjlarry/database/database
         provider_name: hjlarry/database/database
         provider_type: builtin
-        selected: true
-        title: create_profile
+        selected: false
+        title: run_sql
         tool_configurations:
           config_options:
             type: constant
             value: null
           format:
             type: constant
-            value: json
+            value: md
         tool_description: This tool is used to execute SQL in an existing database.
         tool_label: SQL Execute
         tool_name: sql_execute
@@ -644,118 +584,51 @@ workflow:
             value: ''
           query:
             type: mixed
-            value: 'BEGIN
-
-              DBMS_CLOUD_AI.CREATE_PROFILE(
-
-              profile_name => ''{{#1750052353565.profile_name#}}'',
-
-              attributes => ''{"provider": "{{#1750052353565.provider#}}",
-
-              "credential_name": "{{#1750052353565.credential_name#}}",
-
-              "region": "{{#1750052353565.region#}}",
-
-              "oci_compartment_id": "{{#1750052353565.compartment_id#}}",
-
-              "model": "{{#1750052353565.model#}}",
-
-              "comments": "true",
-
-              "object_list": {{#1750056741261.result#}}
-
-              }'',
-
-              status => ''ENABLED'',
-
-              description => ''AI profile to use OCI Generative AI for SQL translation''
-
-              );
-
-              END;'
+            value: '{{#1750060769683.output#}}'
         type: tool
       height: 113
-      id: '17500527184870'
+      id: '1750061174790'
       position:
-        x: 1246
-        y: 361.5
+        x: 1234
+        y: 259
       positionAbsolute:
-        x: 1246
-        y: 361.5
+        x: 1234
+        y: 259
       selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 241
     - data:
-        cases:
-        - case_id: 'true'
-          conditions:
-          - comparison_operator: is
-            id: 100c90d0-8552-4d20-9139-6d2aaece49f2
-            value: 'Yes'
-            varType: string
-            variable_selector:
-            - '1750052353565'
-            - drop_existing_profile
-          id: 'true'
-          logical_operator: and
+        answer: '
+
+          ---
+
+
+          # DB検索結果により、LLMの回答：
+
+
+          {{#1750061174790.text#}}'
         desc: ''
         selected: false
-        title: IF/ELSE
-        type: if-else
-      height: 123
-      id: '1750054054809'
+        title: LLM回答
+        type: answer
+        variables: []
+      height: 118
+      id: '1750830701284'
       position:
-        x: 334
-        y: 361.5
+        x: 1535
+        y: 259
       positionAbsolute:
-        x: 334
-        y: 361.5
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 241
-    - data:
-        code: "import json\n\ndef main(adb_username: str, object_list: str) -> dict:\n\
-          \    # 将输入的逗号分隔的字符串分割成列表\n    objects = object_list.split(',')\n\n    #\
-          \ 创建包含指定结构的列表\n    result = [{\"owner\": adb_username, \"name\": obj.strip()}\
-          \ for obj in objects]\n\n    return {\"result\": json.dumps(result)}"
-        code_language: python3
-        desc: ''
-        outputs:
-          result:
-            children: null
-            type: string
-        selected: false
-        title: コード実行
-        type: code
-        variables:
-        - value_selector:
-          - '1750052353565'
-          - adb_username
-          value_type: string
-          variable: adb_username
-        - value_selector:
-          - '1750052353565'
-          - object_list
-          variable: object_list
-      height: 51
-      id: '1750056741261'
-      position:
-        x: 942
-        y: 361.5
-      positionAbsolute:
-        x: 942
-        y: 361.5
+        x: 1535
+        y: 259
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 241
     viewport:
-      x: -516.85
-      y: 96.4
-      zoom: 0.7
+      x: -526.6117423991682
+      y: 139.27753906195377
+      zoom: 0.9236555375410258
   rag_pipeline_variables: []
