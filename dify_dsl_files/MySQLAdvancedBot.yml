@@ -2,8 +2,8 @@ app:
   description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
-  mode: workflow
-  name: SelectAIComments登録くん
+  mode: advanced-chat
+  name: MySQLAdvancedBot
   use_icon_as_answer_icon: false
 dependencies:
 - current_identifier: null
@@ -61,163 +61,79 @@ workflow:
   graph:
     edges:
     - data:
-        isInIteration: false
+        isInIteration: true
         isInLoop: false
-        sourceType: start
-        targetType: code
-      id: 1750064587986-source-1750067099942-target
-      source: '1750064587986'
+        iteration_id: '1757422671766'
+        sourceType: iteration-start
+        targetType: tool
+      id: 1757422671766start-source-1757422693686-target
+      source: 1757422671766start
       sourceHandle: source
-      target: '1750067099942'
+      target: '1757422693686'
       targetHandle: target
       type: custom
-      zIndex: 0
+      zIndex: 1002
     - data:
         isInIteration: false
         isInLoop: false
         sourceType: code
         targetType: iteration
-      id: 1750067099942-source-1750070168658-target
-      source: '1750067099942'
+      id: 1757422792546-source-1757422671766-target
+      source: '1757422792546'
       sourceHandle: source
-      target: '1750070168658'
+      target: '1757422671766'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: iteration
-        targetType: end
-      id: 1750070168658-source-1750065065957-target
-      source: '1750070168658'
-      sourceHandle: source
-      target: '1750065065957'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: true
-        isInLoop: false
-        iteration_id: '1750070168658'
-        sourceType: if-else
-        targetType: tool
-      id: 1750070208604-true-1750070247656-target
-      source: '1750070208604'
-      sourceHandle: 'true'
-      target: '1750070247656'
-      targetHandle: target
-      type: custom
-      zIndex: 1002
-    - data:
-        isInIteration: true
-        isInLoop: false
-        iteration_id: '1750070168658'
-        sourceType: iteration-start
-        targetType: if-else
-      id: 1750070168658start-source-1750070208604-target
-      source: 1750070168658start
-      sourceHandle: source
-      target: '1750070208604'
-      targetHandle: target
-      type: custom
-      zIndex: 1002
-    - data:
-        isInIteration: true
-        isInLoop: false
-        iteration_id: '1750070168658'
-        sourceType: tool
+        sourceType: answer
         targetType: code
-      id: 1750070247656-source-1750070775070-target
-      source: '1750070247656'
+      id: 17574235870860-source-1757422792546-target
+      source: '17574235870860'
       sourceHandle: source
-      target: '1750070775070'
+      target: '1757422792546'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1757422671766'
+        sourceType: tool
+        targetType: answer
+      id: 1757422693686-source-1757469452295-target
+      source: '1757422693686'
+      sourceHandle: source
+      target: '1757469452295'
       targetHandle: target
       type: custom
       zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: answer
+      id: 1757050135191-source-17574235870860-target
+      source: '1757050135191'
+      sourceHandle: source
+      target: '17574235870860'
+      targetHandle: target
+      type: custom
+      zIndex: 0
     nodes:
     - data:
-        desc: ''
-        selected: true
-        title: 開始
+        selected: false
+        title: Start
         type: start
-        variables:
-        - default: ''
-          hint: ''
-          label: result
-          max_length: 20480
-          options: []
-          placeholder: ''
-          required: true
-          type: paragraph
-          variable: result
-      height: 87
-      id: '1750064587986'
-      position:
-        x: 30
-        y: 396.5
-      positionAbsolute:
-        x: 30
-        y: 396.5
-      selected: true
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 241
-    - data:
-        desc: ''
-        outputs:
-        - value_selector:
-          - '1750070168658'
-          - output
-          variable: result
-        selected: false
-        title: output_final_result
-        type: end
-      height: 87
-      id: '1750065065957'
-      position:
-        x: 2064
-        y: 396.5
-      positionAbsolute:
-        x: 2064
-        y: 396.5
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 241
-    - data:
-        code: "import json\nimport re\n\ndef main(result_str: str) -> dict:\n    result_str\
-          \ = result_str.strip()\n    result_json = json.loads(result_str)\n    result\
-          \ = result_json[\"result\"]\n    match = re.search(r\"```sql\\s*(.*?)```\"\
-          , result, re.DOTALL)\n    if match:\n        result = match.group(1).strip()\n\
-          \    else:\n        result = result\n\n    # 将结果按行分割\n    lines = result.split('\\\
-          n')\n\n    # 去掉每行末尾的分号并过滤空行\n    lines = [line.rstrip(';').strip() for line\
-          \ in lines if line.strip()]\n\n    return {\n        \"result\": lines,\n\
-          \    }"
-        code_language: python3
-        desc: ''
-        outputs:
-          result:
-            children: null
-            type: array[string]
-        selected: false
-        title: seperate_comments_sql
-        type: code
-        variables:
-        - value_selector:
-          - '1750064587986'
-          - result
-          value_type: string
-          variable: result_str
+        variables: []
       height: 51
-      id: '1750067099942'
+      id: '1757050135191'
       position:
-        x: 331
-        y: 396.5
+        x: 30
+        y: 350.5
       positionAbsolute:
-        x: 331
-        y: 396.5
+        x: 30
+        y: 350.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -226,34 +142,35 @@ workflow:
     - data:
         desc: ''
         error_handle_mode: terminated
-        height: 393
+        height: 301
         is_parallel: false
+        iterator_input_type: array[string]
         iterator_selector:
-        - '1750067099942'
+        - '1757422792546'
         - result
         output_selector:
-        - '1750070775070'
-        - result
-        output_type: array[object]
+        - '1757422693686'
+        - text
+        output_type: array[string]
         parallel_nums: 10
         selected: false
-        start_node_id: 1750070168658start
-        title: handle_comments_sql
+        start_node_id: 1757422671766start
+        title: Loop SQLs
         type: iteration
-        width: 1372
-      height: 393
-      id: '1750070168658'
+        width: 806
+      height: 301
+      id: '1757422671766'
       position:
-        x: 632
-        y: 396.5
+        x: 933
+        y: 350.5
       positionAbsolute:
-        x: 632
-        y: 396.5
+        x: 933
+        y: 350.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 1372
+      width: 806
       zIndex: 1
     - data:
         desc: ''
@@ -263,14 +180,14 @@ workflow:
         type: iteration-start
       draggable: false
       height: 48
-      id: 1750070168658start
-      parentId: '1750070168658'
+      id: 1757422671766start
+      parentId: '1757422671766'
       position:
         x: 60
-        y: 97.5
+        y: 92.5
       positionAbsolute:
-        x: 692
-        y: 494
+        x: 993
+        y: 443
       selectable: false
       sourcePosition: right
       targetPosition: left
@@ -278,46 +195,11 @@ workflow:
       width: 44
       zIndex: 1002
     - data:
-        cases:
-        - case_id: 'true'
-          conditions:
-          - comparison_operator: not empty
-            id: a9786371-2922-43bf-b934-2b14c73fa84c
-            value: ''
-            varType: string
-            variable_selector:
-            - '1750070168658'
-            - item
-          id: 'true'
-          logical_operator: and
-        desc: ''
-        isInIteration: true
-        isInLoop: false
-        iteration_id: '1750070168658'
-        selected: false
-        title: if_sql_not_none
-        type: if-else
-      height: 123
-      id: '1750070208604'
-      parentId: '1750070168658'
-      position:
-        x: 204
-        y: 60
-      positionAbsolute:
-        x: 836
-        y: 456.5
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 241
-      zIndex: 1002
-    - data:
         desc: ''
         isInIteration: true
         isInLoop: false
         is_team_authorization: true
-        iteration_id: '1750070168658'
+        iteration_id: '1757422671766'
         output_schema: null
         paramSchemas:
         - auto_generate: null
@@ -389,37 +271,43 @@ workflow:
           min: null
           name: format
           options:
-          - label:
+          - icon: ''
+            label:
               en_US: JSON
               ja_JP: JSON
               pt_BR: JSON
               zh_Hans: JSON
             value: json
-          - label:
+          - icon: ''
+            label:
               en_US: CSV
               ja_JP: CSV
               pt_BR: CSV
               zh_Hans: CSV
             value: csv
-          - label:
+          - icon: ''
+            label:
               en_US: YAML
               ja_JP: YAML
               pt_BR: YAML
               zh_Hans: YAML
             value: yaml
-          - label:
+          - icon: ''
+            label:
               en_US: Markdown
               ja_JP: Markdown
               pt_BR: Markdown
               zh_Hans: Markdown
             value: md
-          - label:
+          - icon: ''
+            label:
               en_US: Excel
               ja_JP: Excel
               pt_BR: Excel
               zh_Hans: Excel
             value: xlsx
-          - label:
+          - icon: ''
+            label:
               en_US: HTML
               ja_JP: HTML
               pt_BR: HTML
@@ -480,14 +368,14 @@ workflow:
         provider_name: hjlarry/database/database
         provider_type: builtin
         selected: false
-        title: execute_comments_sql
+        title: Run SQL
         tool_configurations:
           config_options:
-            type: constant
+            type: mixed
             value: null
           format:
             type: constant
-            value: json
+            value: md
         tool_description: This tool is used to execute SQL in an existing database.
         tool_label: SQL Execute
         tool_name: sql_execute
@@ -495,20 +383,20 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: ''
+            value: null
           query:
             type: mixed
-            value: '{{#1750070168658.item#}}'
+            value: '{{#1757422671766.item#}}'
         type: tool
       height: 113
-      id: '1750070247656'
-      parentId: '1750070168658'
+      id: '1757422693686'
+      parentId: '1757422671766'
       position:
-        x: 505
-        y: 65
+        x: 204
+        y: 60
       positionAbsolute:
         x: 1137
-        y: 461.5
+        y: 410.5
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -516,52 +404,121 @@ workflow:
       width: 241
       zIndex: 1002
     - data:
-        code: "\nimport json\n\ndef main(index, item, sql_result) -> dict:\n    try:\n\
-          \        key = f\"{str(index)}_{item}\"\n        return {\n            \"\
-          result\": [{key: sql_result}]\n        }\n    except Exception as e:\n \
-          \       return {\"error\": f\"解析失敗: {str(e)}\"}"
+        code: "\ndef main(query: str) -> dict:\n    sqls = [\n        seg.strip()\n\
+          \        for seg in query.split(';')\n        if seg.strip()\n    ]\n  \
+          \  return {\"result\": sqls}\n"
         code_language: python3
         desc: ''
-        isInIteration: true
-        isInLoop: false
-        iteration_id: '1750070168658'
         outputs:
           result:
             children: null
-            type: array[object]
+            type: array[string]
         selected: false
-        title: handle_sql_result
+        title: Query to SQLs
         type: code
         variables:
         - value_selector:
-          - '1750070168658'
-          - index
-          variable: index
-        - value_selector:
-          - '1750070168658'
-          - item
-          variable: item
-        - value_selector:
-          - '1750070247656'
-          - text
-          variable: sql_result
+          - sys
+          - query
+          value_type: string
+          variable: query
       height: 51
-      id: '1750070775070'
-      parentId: '1750070168658'
+      id: '1757422792546'
       position:
-        x: 806
-        y: 96
+        x: 632
+        y: 350.5
+      positionAbsolute:
+        x: 632
+        y: 350.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: 'This is SQL.
+
+
+          ---
+
+          '
+        desc: ''
+        selected: false
+        title: SQL
+        type: answer
+        variables: []
+      height: 99
+      id: '17574235870860'
+      position:
+        x: 331
+        y: 350.5
+      positionAbsolute:
+        x: 331
+        y: 350.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '
+
+          {{#1757422693686.text#}}
+
+
+          ---
+
+          '
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1757422671766'
+        selected: false
+        title: Output SQL Result
+        type: answer
+        variables: []
+      height: 102
+      id: '1757469452295'
+      parentId: '1757422671766'
+      position:
+        x: 505
+        y: 65.5
       positionAbsolute:
         x: 1438
-        y: 492.5
+        y: 416
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 241
       zIndex: 1002
+    - data:
+        author: Hello Oracle
+        desc: ''
+        height: 93
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Run
+          failed: The length of output variable ","type":"text","version":1},{"detail":0,"format":16,"mode":"normal","style":"","text":"result","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" must
+          be less than 30 elements.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 316
+      height: 93
+      id: '1757472300655'
+      position:
+        x: 594.0389663498892
+        y: 232.90200550324093
+      positionAbsolute:
+        x: 594.0389663498892
+        y: 232.90200550324093
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 316
     viewport:
-      x: 46.35000000000002
-      y: 31
-      zoom: 0.7
+      x: -671.2072863582327
+      y: -38.14023238433731
+      zoom: 0.7827150346992761
   rag_pipeline_variables: []

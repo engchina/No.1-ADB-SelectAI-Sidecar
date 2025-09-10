@@ -9,13 +9,13 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/oci:0.0.8@36efeb33468c2e3a82bb9ab5df84650a262b2a19ab8149485086546191235be6
+    marketplace_plugin_unique_identifier: hjlarry/database:0.0.6@534bc26cf5bc4ff6b5557457452287ccc71f00eef9378784c4f43ca49954ca2f
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: hjlarry/database:0.0.6@534bc26cf5bc4ff6b5557457452287ccc71f00eef9378784c4f43ca49954ca2f
+    marketplace_plugin_unique_identifier: langgenius/oci:0.0.8@36efeb33468c2e3a82bb9ab5df84650a262b2a19ab8149485086546191235be6
 kind: app
-version: 0.3.1
+version: 0.4.0
 workflow:
   conversation_variables: []
   environment_variables: []
@@ -217,37 +217,13 @@ workflow:
         title: 開始
         type: start
         variables:
-        - label: profile_name
-          max_length: 48
-          options: []
-          required: true
-          type: text-input
-          variable: profile_name
-        - label: adb_username
-          max_length: 48
-          options: []
-          required: true
-          type: text-input
-          variable: adb_username
-        - label: adb_password
-          max_length: 48
-          options: []
-          required: true
-          type: text-input
-          variable: adb_password
-        - label: adb_connection_string
-          max_length: 512
-          options: []
-          required: true
-          type: paragraph
-          variable: adb_connection_string
         - label: object_name
           max_length: 128
           options: []
           required: true
           type: text-input
           variable: object_name
-      height: 193
+      height: 87
       id: '1750064587986'
       position:
         x: 30
@@ -255,11 +231,11 @@ workflow:
       positionAbsolute:
         x: 30
         y: 296.5
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         is_team_authorization: true
@@ -440,7 +416,7 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: oracle+oracledb://{{#1750064587986.adb_username#}}:{{#1750064587986.adb_password#}}@{{#1750064587986.adb_connection_string#}}
+            value: ''
           query:
             type: mixed
             value: "SELECT \n    column_name AS \"列名\",\n    data_type AS \"データ型\"\
@@ -448,7 +424,7 @@ workflow:
               \ AS \"デフォルト値\"\nFROM user_tab_columns\nWHERE table_name =  '{{#1750065016506.output#}}'\n\
               ORDER BY column_id"
         type: tool
-      height: 115
+      height: 113
       id: '1750064846973'
       position:
         x: 638
@@ -460,7 +436,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         selected: false
@@ -472,7 +448,7 @@ workflow:
           - '1750064587986'
           - object_name
           variable: object_name
-      height: 53
+      height: 51
       id: '1750065016506'
       position:
         x: 334
@@ -484,7 +460,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         outputs:
@@ -495,7 +471,7 @@ workflow:
         selected: false
         title: 終了
         type: end
-      height: 89
+      height: 87
       id: '1750065065957'
       position:
         x: 1550
@@ -507,7 +483,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         is_team_authorization: true
@@ -688,12 +664,12 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: oracle+oracledb://{{#1750064587986.adb_username#}}:{{#1750064587986.adb_password#}}@{{#1750064587986.adb_connection_string#}}
+            value: ''
           query:
             type: mixed
             value: "SELECT * \nFROM {{#1750065016506.output#}}\nWHERE ROWNUM <= 10"
         type: tool
-      height: 115
+      height: 113
       id: '17500651494790'
       position:
         x: 638
@@ -705,7 +681,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         is_team_authorization: true
@@ -886,14 +862,14 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: oracle+oracledb://{{#1750064587986.adb_username#}}:{{#1750064587986.adb_password#}}@{{#1750064587986.adb_connection_string#}}
+            value: ''
           query:
             type: mixed
             value: "SELECT \n    table_name AS \"テーブル名\",\n    (SELECT COUNT(*) FROM\
               \ {{#1750065016506.output#}}) AS \"実際の行数\"\nFROM user_tables\nWHERE\
               \ table_name = '{{#1750065016506.output#}}'"
         type: tool
-      height: 115
+      height: 113
       id: '17500651922760'
       position:
         x: 638
@@ -905,7 +881,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         is_team_authorization: true
@@ -1086,7 +1062,7 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: oracle+oracledb://{{#1750064587986.adb_username#}}:{{#1750064587986.adb_password#}}@{{#1750064587986.adb_connection_string#}}
+            value: ''
           query:
             type: mixed
             value: "SELECT column_name AS \"主キー列\"\nFROM user_cons_columns \nWHERE\
@@ -1094,7 +1070,7 @@ workflow:
               \ \n    WHERE table_name = '{{#1750065016506.output#}}'\n    AND constraint_type\
               \ = 'P'\n)"
         type: tool
-      height: 115
+      height: 113
       id: '17500652358360'
       position:
         x: 638
@@ -1106,7 +1082,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         desc: ''
         is_team_authorization: true
@@ -1287,7 +1263,7 @@ workflow:
         tool_parameters:
           db_uri:
             type: mixed
-            value: oracle+oracledb://{{#1750064587986.adb_username#}}:{{#1750064587986.adb_password#}}@{{#1750064587986.adb_connection_string#}}
+            value: ''
           query:
             type: mixed
             value: "SELECT \n    c.table_name AS \"参照元テーブル\",\n    cc.column_name\
@@ -1297,7 +1273,7 @@ workflow:
               \ user_constraints \n    WHERE table_name = '{{#1750065016506.output#}}'\n\
               \    AND constraint_type = 'P'\n)"
         type: tool
-      height: 115
+      height: 113
       id: '17500652552920'
       position:
         x: 638
@@ -1309,7 +1285,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         context:
           enabled: false
@@ -1337,13 +1313,13 @@ workflow:
             \ [テーブル名]」を追加\n   - 削除ルール: 「削除時: [アクション]」を追加\n   - コード値: 値の意味を説明 (例: \"\
             1:有効, 0:無効\")\n\n4. 出力形式:\n```sql\nCOMMENT ON TABLE DEPARTMENTS IS '[コメント]';\n\
             \nCOMMENT ON COLUMN DEPARTMENTS.[列名] IS '[コメント]';\n```\n"
-        selected: true
+        selected: false
         title: LLM
         type: llm
         variables: []
         vision:
           enabled: false
-      height: 89
+      height: 87
       id: '1750065290260'
       position:
         x: 942
@@ -1351,11 +1327,11 @@ workflow:
       positionAbsolute:
         x: 942
         y: 606.5
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     - data:
         code: "import re\n\ndef main(sql_md: str) -> dict:\n    result = \"\"\n  \
           \  match = re.search(r\"```sql\\s*(.*?)```\", sql_md, re.DOTALL)\n    if\
@@ -1375,7 +1351,7 @@ workflow:
           - '1750065290260'
           - text
           variable: sql_md
-      height: 53
+      height: 51
       id: '1750256120171'
       position:
         x: 1246
@@ -1387,8 +1363,9 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 241
     viewport:
-      x: 62
-      y: -47
-      zoom: 0.7
+      x: -997.4665754622836
+      y: -193.3760994016667
+      zoom: 0.9236555375410257
+  rag_pipeline_variables: []
