@@ -39,11 +39,11 @@ variableGroups:
       - db_system_display_name
       - db_password
       - instance_display_name
+      - instance_shape
+      - ssh_authorized_keys
       - vcn_ai_vcn_id
       - subnet_private_id
       - subnet_public_id
-      - instance_shape
-      - ssh_authorized_keys
       - bucket_region
       - bucket_name
       - oci_access_key
@@ -136,6 +136,13 @@ variables:
     visible: true
     title: "Compute instance name"
 
+  ssh_authorized_keys:
+    type: oci:core:ssh:publickey
+    title: "Add SSH keys"
+    description: "Upload a public key that you already have."
+    required: true
+    visible: true
+
   vcn_ai_vcn_id:
     type: oci:core:vcn:id
     required: true
@@ -164,13 +171,6 @@ variables:
     dependsOn:
       compartmentId: ${compartment_ocid}
       vcnId: ${vcn_ai_vcn_id}
-
-  ssh_authorized_keys:
-    type: oci:core:ssh:publickey
-    title: "Add SSH keys"
-    description: "Upload a public key that you already have."
-    required: true
-    visible: true
 
   bucket_region:
     type: enum

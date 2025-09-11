@@ -770,7 +770,7 @@ workflow:
           result:
             children: null
             type: array[string]
-        selected: true
+        selected: false
         title: Query to SQLs
         type: code
         variables:
@@ -787,7 +787,7 @@ workflow:
       positionAbsolute:
         x: 1791
         y: 531
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -904,8 +904,42 @@ workflow:
       type: custom
       width: 241
       zIndex: 1002
+    - data:
+        author: Hello Oracle
+        desc: ''
+        height: 277
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"SELECT
+          ''TABLE'' AS OBJECT_TYPE,","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"TABLE_NAME
+          AS OBJECT_NAME,","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"COMMENTS","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"FROM
+          USER_TAB_COMMENTS","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"WHERE
+          TABLE_NAME = ''ORDERS''","type":"text","version":1}],"direction":"ltr","format":"start","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"UNION
+          ALL","type":"text","version":1}],"direction":"ltr","format":"start","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"SELECT
+          ''COLUMN'' AS OBJECT_TYPE,","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"COLUMN_NAME
+          AS OBJECT_NAME,","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"COMMENTS","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"FROM
+          USER_COL_COMMENTS","type":"text","version":1},{"type":"linebreak","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"WHERE
+          TABLE_NAME = ''ORDERS''","type":"text","version":1}],"direction":"ltr","format":"start","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"ORDER
+          BY OBJECT_TYPE DESC, OBJECT_NAME;","type":"text","version":1}],"direction":"ltr","format":"start","indent":0,"type":"paragraph","version":1,"textFormat":0,"textStyle":""}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: blue
+        title: ''
+        type: ''
+        width: 444
+      height: 277
+      id: '1757503499254'
+      position:
+        x: 2119.571428571429
+        y: 819.1428571428571
+      positionAbsolute:
+        x: 2119.571428571429
+        y: 819.1428571428571
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 444
     viewport:
-      x: -1208.7
-      y: 20.600000000000023
-      zoom: 0.7
+      x: -1359.8876924387105
+      y: -236.53529217918674
+      zoom: 0.7677774857862381
   rag_pipeline_variables: []
