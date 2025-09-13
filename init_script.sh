@@ -461,6 +461,10 @@ sed -i "s|^SERVICE_API_URL=.*|SERVICE_API_URL=http://${EXTERNAL_IP}:8080|" .env
 sed -i "s|^APP_API_URL=.*|APP_API_URL=http://${EXTERNAL_IP}:8080|" .env
 sed -i "s|^APP_WEB_URL=.*|APP_WEB_URL=http://${EXTERNAL_IP}:8080|" .env
 sed -i "s|^FILES_URL=.*|FILES_URL=http://${EXTERNAL_IP}:5001|" .env
+sed -i "s|^UPLOAD_FILE_SIZE_LIMIT=15|UPLOAD_FILE_SIZE_LIMIT=100|g" .env
+sed -i "s|^CODE_MAX_STRING_ARRAY_LENGTH=30|CODE_MAX_STRING_ARRAY_LENGTH=1000|g" .env
+sed -i "s|^CODE_MAX_OBJECT_ARRAY_LENGTH=30|CODE_MAX_OBJECT_ARRAY_LENGTH=1000|g" .env
+sed -i "s|^HTTP_REQUEST_NODE_MAX_BINARY_SIZE=10485760|HTTP_REQUEST_NODE_MAX_BINARY_SIZE=104857600|g" .env
 
 # Create docker-compose.override.yaml port configuration
 log "Creating Docker Compose override configuration..."
