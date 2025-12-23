@@ -16,7 +16,6 @@ source setup_miniconda_ubuntu.sh
 Any2Pdf アプリケーションの環境構築を行います。
 
 ```bash
-chmod +x /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/setup_no1_any2pdf.sh
 /bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/setup_no1_any2pdf.sh
 ```
 
