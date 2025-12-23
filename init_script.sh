@@ -475,6 +475,11 @@ services:
       - '${DIFY_PORT:-5001}:${DIFY_PORT:-5001}'
 EOL
 
+# Set permissions for Dify 1.10.1+
+log "Setting permissions for storage directories..."
+mkdir -p volumes/app/storage
+sudo chown -R 1001:1001 volumes/app/storage
+
 # Start Docker Compose
 log "Starting Dify services..."
 if docker compose -p dify up -d; then
@@ -554,6 +559,10 @@ sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aipoc/props/wallet"|g'
 # Copy wallet to Dify containers with retry
 log "Copying wallet to Dify containers..."
 execute_container_operation "dify-worker-1" "wallet copy" "docker cp /u01/aipoc/props/wallet dify-worker-1:/app/api/storage/wallet" || exit 1
+
+# Fix wallet permissions for Dify 1.10.1+
+log "Fixing wallet permissions..."
+sudo chown -R 1001:1001 volumes/app/storage/wallet
 
 # Fix NLTK download issues with retry
 log "Fixing NLTK download issues..."
