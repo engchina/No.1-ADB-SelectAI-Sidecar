@@ -482,7 +482,7 @@ sudo chown -R 1001:1001 volumes/app/storage
 
 # Start Docker Compose
 log "Starting Dify services..."
-if docker compose -p dify up -d; then
+if docker compose -p postgresql up -d; then
     log "Dify services started successfully"
 else
     log_error "Dify services startup failed"
