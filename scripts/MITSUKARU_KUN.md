@@ -91,7 +91,7 @@ vi ~/.oci/oci_api_key.pem
 ```
 chmod 600 ~/.oci/oci_api_key.pem
 chmod 600 ~/.oci/config
-chmod 600 ~/.oci
+chmod 700 ~/.oci
 ```
 
 ## 6. No.1-ChatOCI-Images の起動
