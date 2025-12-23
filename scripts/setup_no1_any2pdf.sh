@@ -37,7 +37,7 @@ echo "===== Install cron @reboot (current user) ====="
 
 (
   crontab -l 2>/dev/null | \
-  grep -v "/u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh"
+  grep -v "/u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh" || true
   echo "@reboot /bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh"
 ) | crontab -
 

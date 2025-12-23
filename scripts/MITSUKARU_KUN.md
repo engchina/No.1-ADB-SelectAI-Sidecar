@@ -66,13 +66,32 @@ DB_DSN=your-oracle-db-dsn  # 完全なDSN文字列（例: host:port/service_name
 
 #### OCI 設定ファイルの作成
 `~/.oci/config` ファイルを作成し、必要な認証情報を記述します：
+
+```
+mkdir ~/.oci
+```
+
+```
+vi ~/.oci/config
+```
+
 ```ini
 [DEFAULT]
 user=ocid1.user.oc1..aaaaaaaa...
 fingerprint=12:34:56:78:90:ab:cd:ef...
-key_file=~/.oci/oci_api_key.pem
 tenancy=ocid1.tenancy.oc1..aaaaaaaa...
 region=us-chicago-1
+key_file=~/.oci/oci_api_key.pem
+```
+
+```
+vi ~/.oci/oci_api_key.pem
+```
+
+```
+chmod 600 ~/.oci/oci_api_key.pem
+chmod 600 ~/.oci/config
+chmod 600 ~/.oci
 ```
 
 ## 6. No.1-ChatOCI-Images の起動
@@ -80,6 +99,5 @@ region=us-chicago-1
 設定完了後、以下のコマンドでサービスを起動します。
 
 ```bash
-chmod +x /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_chatoci_images.sh
 /bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_chatoci_images.sh
 ```
