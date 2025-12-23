@@ -24,7 +24,6 @@ Any2Pdf アプリケーションの環境構築を行います。
 以下のコマンドでサービスを起動します。
 
 ```bash
-chmod +x /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh
 /bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh
 ```
 
@@ -33,7 +32,6 @@ chmod +x /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh
 ChatOCI-Images アプリケーションの環境構築を行います。
 
 ```bash
-chmod +x /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/setup_no1_chatoci_images.sh
 /bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/setup_no1_chatoci_images.sh
 ```
 
