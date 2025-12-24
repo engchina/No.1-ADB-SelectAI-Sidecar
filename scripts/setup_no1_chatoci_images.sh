@@ -9,6 +9,17 @@ set -euo pipefail
 echo "===== Load conda ====="
 source /u01/aipoc/miniconda/etc/profile.d/conda.sh
 
+echo "===== Install system libraries ====="
+sudo apt-get update -y
+sudo apt-get install -y \
+  libreoffice \
+  fonts-noto-cjk \
+  fonts-noto-cjk-extra \
+  fonts-ipafont \
+  fonts-takao \
+  fonts-wqy-microhei \
+  fonts-wqy-zenhei
+
 BASE_DIR="/u01/aipoc"
 PROJECT_NAME="No.1-ChatOCI-Images"
 PROJECT_DIR="${BASE_DIR}/${PROJECT_NAME}"

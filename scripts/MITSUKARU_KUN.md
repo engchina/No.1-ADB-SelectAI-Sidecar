@@ -11,23 +11,7 @@ cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts
 source setup_miniconda_ubuntu.sh
 ```
 
-## 2. No.1-Any2Pdf のセットアップ
-
-Any2Pdf アプリケーションの環境構築を行います。
-
-```bash
-/bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/setup_no1_any2pdf.sh
-```
-
-## 3. No.1-Any2Pdf の起動
-
-以下のコマンドでサービスを起動します。
-
-```bash
-/bin/bash /u01/aipoc/No.1-ADB-SelectAI-Sidecar/scripts/start_no1_any2pdf.sh
-```
-
-## 4. No.1-ChatOCI-Images のセットアップ
+## 2. No.1-ChatOCI-Images のセットアップ
 
 ChatOCI-Images アプリケーションの環境構築を行います。
 
@@ -62,7 +46,7 @@ DB_PASSWORD=your-db-password
 DB_DSN=your-oracle-db-dsn  # 完全なDSN文字列（例: host:port/service_name）
 ```
 
-### 5. OCI 設定
+### 3. OCI 設定
 
 #### OCI 設定ファイルの作成
 `~/.oci/config` ファイルを作成し、必要な認証情報を記述します：
@@ -94,7 +78,7 @@ chmod 600 ~/.oci/config
 chmod 700 ~/.oci
 ```
 
-## 6. No.1-ChatOCI-Images の起動
+## 4. No.1-ChatOCI-Images の起動
 
 設定完了後、以下のコマンドでサービスを起動します。
 
