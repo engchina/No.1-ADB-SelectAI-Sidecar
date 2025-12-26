@@ -610,7 +610,7 @@ log "Returning to source directory..."
 cd /u01/aipoc/No.1-ADB-SelectAI-Sidecar
 sed -i "s|localhost:3100|$EXTERNAL_IP:3100|g" ./langfuse/docker-compose.yml
 chmod +x ./langfuse/main.sh
-nohup ./langfuse/main.sh &
+#nohup ./langfuse/main.sh &
 
 # Initialization completed
 log "=== Initialization completed ==="
