@@ -522,8 +522,8 @@ sleep 45
 
 # Verify container status with retry mechanism
 log "Verifying container status with retry mechanism..."
-check_container_status "dify-api-1" || exit 1
-check_container_status "dify-worker-1" || exit 1
+check_container_status "postgresql-api-1" || exit 1
+check_container_status "postgresql-worker-1" || exit 1
 
 log "All containers are running successfully"
 
@@ -559,7 +559,7 @@ sed -i 's|DIRECTORY="?\+/network/admin" *|DIRECTORY="/u01/aipoc/props/wallet"|g'
 
 # Copy wallet to Dify containers with retry
 log "Copying wallet to Dify containers..."
-execute_container_operation "dify-worker-1" "wallet copy" "docker cp /u01/aipoc/props/wallet dify-worker-1:/app/api/storage/wallet" || exit 1
+execute_container_operation "postgresql-worker-1" "wallet copy" "docker cp /u01/aipoc/props/wallet postgresql-worker-1:/app/api/storage/wallet" || exit 1
 
 # Fix wallet permissions for Dify 1.10.1+
 log "Fixing wallet permissions..."
@@ -567,19 +567,19 @@ sudo chown -R 1001:1001 volumes/app/storage/wallet
 
 # Fix NLTK download issues with retry
 log "Fixing NLTK download issues..."
-execute_container_operation "dify-api-1" "NLTK configuration" "docker exec dify-api-1 python -c 'import nltk; nltk.download(\"punkt\", quiet=True); nltk.download(\"punkt_tab\", quiet=True)'" || log "API container NLTK configuration failed, continuing..."
+execute_container_operation "postgresql-api-1" "NLTK configuration" "docker exec postgresql-api-1 python -c 'import nltk; nltk.download(\"punkt\", quiet=True); nltk.download(\"punkt_tab\", quiet=True)'" || log "API container NLTK configuration failed, continuing..."
 
-execute_container_operation "dify-worker-1" "NLTK configuration" "docker exec dify-worker-1 python -c 'import nltk; nltk.download(\"punkt\", quiet=True); nltk.download(\"punkt_tab\", quiet=True)'" || log "Worker container NLTK configuration failed, continuing..."
+execute_container_operation "postgresql-worker-1" "NLTK configuration" "docker exec postgresql-worker-1 python -c 'import nltk; nltk.download(\"punkt\", quiet=True); nltk.download(\"punkt_tab\", quiet=True)'" || log "Worker container NLTK configuration failed, continuing..."
 
 # Restart containers to apply configuration with retry
 log "Restarting containers to apply configuration..."
-execute_container_operation "dify-worker-1,dify-api-1" "container restart" "docker restart dify-worker-1 dify-api-1" || exit 1
+execute_container_operation "postgresql-worker-1,postgresql-api-1" "container restart" "docker restart postgresql-worker-1 postgresql-api-1" || exit 1
 
 # Wait and verify containers are running after restart
 log "Waiting for containers to restart..."
 sleep 30
-check_container_status "dify-api-1" || exit 1
-check_container_status "dify-worker-1" || exit 1
+check_container_status "postgresql-api-1" || exit 1
+check_container_status "postgresql-worker-1" || exit 1
 
 # Final service verification with retry
 log "Performing final service verification..."
