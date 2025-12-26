@@ -150,6 +150,7 @@ log "Downloading Oracle Instant Client Basic..."
 download_with_retry "https://download.oracle.com/otn_software/linux/instantclient/2390000/instantclient-basic-linux.x64-23.9.0.25.07.zip" "/u01/aipoc/instantclient-basic-linux.x64-23.9.0.25.07.zip"
 verify_file "/u01/aipoc/instantclient-basic-linux.x64-23.9.0.25.07.zip"
 
+sudo apt install -y unzip
 log "Extracting Oracle Instant Client Basic..."
 unzip -o -q /u01/aipoc/instantclient-basic-linux.x64-23.9.0.25.07.zip -d /u01/aipoc/
 
@@ -492,7 +493,7 @@ fi
 # Function to check container status with retry
 check_container_status() {
     local container_name="$1"
-    local max_attempts=10
+    local max_attempts=30
     local wait_time=15
     
     for attempt in $(seq 1 $max_attempts); do
