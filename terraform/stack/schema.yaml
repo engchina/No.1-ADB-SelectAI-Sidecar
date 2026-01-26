@@ -248,7 +248,7 @@ variables:
     visible: true
     title: "Dify Branch/Tag"
     description: "Branch or tag name to use when cloning the Dify repository"
-    default: "1.8.1"
+    default: "1.11.4"
 
   db_system_credentials_password_details_password_type:
     type: string

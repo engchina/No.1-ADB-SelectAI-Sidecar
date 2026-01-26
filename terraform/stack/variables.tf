@@ -79,7 +79,7 @@ variable "oci_secret_key" {
 }
 
 variable "dify_branch" {
-  default = "1.8.1"
+  default = "1.11.4"
 }
 
 variable "mysql_display_name" {
