@@ -1,14 +1,14 @@
 resource "oci_database_autonomous_database" "generated_database_autonomous_database" {
-  admin_password                       = var.db_password
-  autonomous_maintenance_schedule_type = "REGULAR"
-  backup_retention_period_in_days      = "1"
-  character_set                        = "AL32UTF8"
-  compartment_id                       = var.compartment_ocid
-  compute_count                        = "2"
-  compute_model                        = "ECPU"
-  data_storage_size_in_tbs             = "1"
-  db_name                              = var.adb_name
-  db_version                                     = "23ai"
+  admin_password                                 = var.db_password
+  autonomous_maintenance_schedule_type           = "REGULAR"
+  backup_retention_period_in_days                = "1"
+  character_set                                  = "AL32UTF8"
+  compartment_id                                 = var.compartment_ocid
+  compute_count                                  = "2"
+  compute_model                                  = "ECPU"
+  data_storage_size_in_tbs                       = "1"
+  db_name                                        = var.adb_name
+  db_version                                     = "26ai"
   db_workload                                    = "DW"
   display_name                                   = var.adb_name
   is_auto_scaling_enabled                        = "false"
