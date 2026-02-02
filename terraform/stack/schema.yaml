@@ -32,6 +32,7 @@ variableGroups:
       - compartment_ocid
       - availability_domain
       - adb_name
+      - adb_display_name
       - license_model
       - enable_mysql      
       - mysql_display_name
@@ -77,6 +78,14 @@ variables:
     required: true
     visible: true
     title: "ADB Name"
+
+  adb_display_name:
+    type: string
+    required: true
+    visible: true
+    title: "ADB Display Name"
+    description: "Display name for the Autonomous Database"
+    default: "AISIDECAR"
 
   license_model:
     type: enum
