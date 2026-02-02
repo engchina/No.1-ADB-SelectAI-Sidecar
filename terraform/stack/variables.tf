@@ -11,8 +11,8 @@ variable "adb_name" {
 }
 
 variable "adb_display_name" {
-  description = "Display name for Autonomous Database"
-  default = "AISIDECAR"
+  description = "Display name for Autonomous Database (optional, defaults to adb_name if not specified)"
+  default = ""
 }
 
 variable "db_password" {

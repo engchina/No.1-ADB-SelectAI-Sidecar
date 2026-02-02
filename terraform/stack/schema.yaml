@@ -81,11 +81,11 @@ variables:
 
   adb_display_name:
     type: string
-    required: true
+    required: false
     visible: true
-    title: "ADB Display Name"
-    description: "Display name for the Autonomous Database"
-    default: "AISIDECAR"
+    title: "ADB Display Name (Optional)"
+    description: "Display name for the Autonomous Database (if not specified, ADB Name will be used)"
+    default: ""
 
   license_model:
     type: enum

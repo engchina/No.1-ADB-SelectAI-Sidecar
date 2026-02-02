@@ -10,7 +10,7 @@ resource "oci_database_autonomous_database" "generated_database_autonomous_datab
   db_name                                        = var.adb_name
   db_version                                     = "26ai"
   db_workload                                    = "DW"
-  display_name                                   = var.adb_display_name
+  display_name                                   = var.adb_display_name != "" ? var.adb_display_name : var.adb_name
   is_auto_scaling_enabled                        = "false"
   is_auto_scaling_for_storage_enabled            = "false"
   is_dedicated                                   = "false"
