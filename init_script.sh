@@ -474,6 +474,8 @@ services:
   api:
     ports:
       - '${DIFY_PORT:-5001}:${DIFY_PORT:-5001}'
+    environment:
+      - WORKFLOW_MAX_EXECUTION_STEPS=5000
 EOL
 
 # Set permissions for Dify 1.10.1+
